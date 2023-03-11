@@ -1,27 +1,25 @@
 # obwahlen PRE
 
-**DIES IST IM AUGENBLICK NUR EINE NOCH NICHT ANGEPASSTE KOPIE DES REFERENDUMS-CODES** - bitte nicht nutzen und wundern! Anpassung spätestens zur [1. Runde der OB-Wahl in Frankfurt am 5. März 2023](https://frankfurt.de/aktuelle-meldung/meldungen/direktwahl-oberbuergermeisterin-oberbuergermeister-frankfurt/). 
-
 R-Code, um den Auszählungsstand hessischer Bürgermeisterwahlen in Echtzeit abzurufen und mit Datawrapper darzustellen
 
 ## Ordnerstruktur
 
 - **R** enthält den Code
-- **index** enthält Index-, Konfigurations-, und Template-Dateien
+- **index** enthält die Konfigurationsdatei index.csv und Unterordner mit den Indexdateien: Kandidaten, Stadtteile, Stimmbezirke, Datawrapper-Zuordnungen. 
 - **daten** wird vom Code beschrieben und enthält den aktuellen Datenstand.
 
 ## Daten aufarbeiten
 
 ### Ziele
 
-Folgende Grafiken wären denkbar: 
-* Balkengrafik Ergebnis nach derzeitigem Auszählungsstand mit "Fortschrittsbalken"
-* Choropleth Stadtteil-Sieger
+Grafiken: 
+* Säulengrafik erste fünf; Ergebnis nach derzeitigem Auszählungsstand mit "Fortschrittsbalken"
+
+* Balkengrafik alle
+* Choropleth Stadtteil-Sieger (mit Switcher alle, die gewonnen haben)
 * Choropleth Ergebnis nach Kandidat
-* Choropleth Wahlbeteiligung
-* Choropleth Briefwahl
+* Tabelle nach Kandidaten (3 beste, 3 schlechteste Stadtteile)
 * Tabelle nach Stadtteil 
-* Tabelle nach Kandidaten (Erste drei? fünf?)
 
 ### Konfiguration
 
@@ -41,15 +39,20 @@ Aggregation auf Stadtebene
 - Fortschrittsbalken ausgezählte Stimmen (mit akt. Briefwahlstimmendaten)
 
 
-## Struktur des Codes
+## Struktur des Codes: Was tut was?
 
-### Hauptroutinen
+(siehe ["Sitemap"](./sitemap.md) für den Code)
 
-- **update_all.R** ist das Skript für den CRON-Job. Es pollt nach Daten, ruft die Abruf-, Aggregations- und Auswertungsfunktionen auf und gibt Meldungen aus. 
-- **lies_aktuellen_stand.R** enthält Funktionen, die die Daten lesen, aggregieren und archivieren
-- **aktualisiere_karten.R** enthält die Funktionen zur Datenausgabe
-- **messaging.R** enthält Funktionen, die Teams-Updates und -Fehlermeldungen generieren
 
-### Hilfsfunktionen
+# TODO
 
-- **generiere_testdaten.R** ist ein Skript, das zufällige, aber plausible CSV-Daten auf Stimmbezirks-Ebene zum Testen generiert
+
+- Upload aufs Repository
+
+## NTH
+
+- Umschalten Top5-Titel Ergebnis
+- Zusatzfeature: Briefwahlprognostik - wieviele Stimmen fehlen vermutlich noch?
+- Shapefiles KS, DA verbessern
+- Datensparsamere Alternativ-CURL-Poll-Datei (zB mit dem Gesamtergebnis)
+- Mehr Licht in den Choropleth-Karten farbabhängig

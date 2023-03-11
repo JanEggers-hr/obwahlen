@@ -4,6 +4,7 @@
 
 # Session Data files
 .RData
+.DS_Store
 
 # User-specific files
 .Ruserdata
@@ -37,3 +38,13 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# This file
+.gitignore
+
+# Test and sample data
+/testdaten/
+/vorlagen/
+/daten/
+/png/
+/R/Vorbereitung/
