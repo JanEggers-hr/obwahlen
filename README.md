@@ -44,14 +44,9 @@ Aggregation auf Stadtebene
 (siehe ["Sitemap"](./sitemap.md) für den Code)
 
 
-# TODO
+## Nice-To-Have 
 
-
-- Upload aufs Repository
-
-## NTH
-
-- Umschalten Top5-Titel Ergebnis
+- Vergleich letzte Kommunalwahl
 - Zusatzfeature: Briefwahlprognostik - wieviele Stimmen fehlen vermutlich noch?
 - Shapefiles KS, DA verbessern
 - Datensparsamere Alternativ-CURL-Poll-Datei (zB mit dem Gesamtergebnis)

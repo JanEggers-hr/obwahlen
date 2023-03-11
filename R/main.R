@@ -15,7 +15,7 @@ p_load(R.utils)
 
 rm(list=ls())
 
-TEST = TRUE
+TEST = FALSE
 DO_PREPARE_MAPS = TRUE
 
 
@@ -95,10 +95,10 @@ while (gezaehlt < stimmbezirke_n) {
     ts <- ts_daten
     hole_wahldaten()
   } else {
-    # Logfile erneuern und 15 Sekunden schlafen
+    # Logfile erneuern und 10 Sekunden schlafen
     system("touch obwahl.log")
     if (TEST) cat("Warte...\n")
-    Sys.sleep(15)
+    Sys.sleep(10)
   }
 }
 # Titel der Grafik "top" umswitchen

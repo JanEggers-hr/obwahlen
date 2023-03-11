@@ -294,6 +294,8 @@ aktualisiere_top <- function(kand_tabelle_df,top=5) {
 }
 
 aktualisiere_tabelle_alle <- function(kand_tabelle_df) {
+  # Daten und Metadaten hochladen, für die Balkengrafik mit allen 
+  # Stimmen für alle Kandidaten
   dw_data_to_chart(kand_tabelle_df, chart_id = tabelle_alle_id)
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
   # Metadaten anpassen: Farbcodes für Parteien
