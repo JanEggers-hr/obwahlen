@@ -1,3 +1,5 @@
+Notizen: Erstellen eines .geojson-Shapefiles in WGS84 aus einem Standard-Shapefile im falschen Koordinatensystem mit QGIS
+
 1. Shapefile in QGIS importieren 
 
 2. GEOJSON im richtigen Koordinatensystem erstellen
@@ -5,9 +7,6 @@ Dazu Rechtsklick auf den Layer; Koordinatensystem WGS84, exportieren
 
 3. Stadtteile generieren
 Menü "Vektor", "Geometrieverarbeitungswerkzeuge", "Auflösen" - und dann in der Dialogbox auswählen "Felder auflösen [optional]", und dann die Attribute hinzufügen, nach denen zusammengeführt werden soll. 
-
-In KS beispielsweise gab es die 
-
 
 - Rechtsklick auf den Layer; Exportieren als GEOJSON - nicht vergessen, das Bezugssystem auf WGS84 umzustellen!
 - Rechtsklick auf den Layer; Export als XLSX - ggf. Geo-Attribute abschalten
