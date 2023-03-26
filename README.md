@@ -2,6 +2,11 @@
 
 R-Code, um den Auszählungsstand hessischer Bürgermeisterwahlen in Echtzeit abzurufen und mit Datawrapper darzustellen (Frankfurt, Kassel Darmstadt)
 
+Benötigt: 
+- eine config.csv mit dem Link zu den Votemanager-Daten, den Namen der Konfigurationsdateien, und der IDs der Datawrapper-Grafiken
+- die drei Konfigurationsdateien für Kandidaten, Stadtteile, Zuordnung der Stimmbezirke zu den Stadtteilen
+- vorbereitete Datawrapper-Grafiken und Karten mit dem korrekten Shapefile
+
 ## Votemanager und Datawrapper sind Voraussetzung ##
 Das Programm arbeitet mit den Daten, die das Programm "Votemanager" bereitstellt; es ist bei allen größeren hessischen Kommunen im Einsatz. Votemanager publiziert das Auszählungsergebnis live, sobald es vorliegt, nach verschiedenen Aggregationsebenen, bis hinunter auf die Ebene des einzelnen Stimmbezirks als "Schnellmeldung".
 
