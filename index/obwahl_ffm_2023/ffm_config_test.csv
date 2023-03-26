@@ -1,0 +1,37 @@
+name,value,comment
+wahl_name,obwahl_ffm_2023,Welche Wahl?
+stimmbezirke_url,testdaten/dummy.csv,URL Daten-CSV Stimmbezirke
+wahlberechtigt,508182,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,250000,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+kandidaten_fname,kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+datawrapper_fname,datawrapper.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,zuordnung_wahllokale.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,stadtteile.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-01-01 18:00:00 CET,Beginn der Auszählung
+top5_id,028Fp,
+karte_sieger_id,7gscI,
+karte_kand1_id,hM9SE,Rottmann (Grüne)
+karte_kand2_id,hM9SE,Becker (CDU)
+karte_kand3_id,07CR4,Josef (SPD)
+karte_kand4_id,07CR4,Mehler-Würzbach (Linke)
+karte_kand5_id,07CR4,Pürsün (FDP)
+karte_kand6_id,07CR4,Lobenstein (AfD)
+karte_kand7_id,07CR4,Pfeiffer (BFF)
+karte_kand8_id,07CR4,Tanczos (PARTEI)
+karte_kand9_id,07CR4,Schwichtenberg (Gartenpartei)
+karte_kand10_id,07CR4,Wirth (unabh.)
+karte_kand11_id,07CR4,Camara (FPF)
+karte_kand12_id,07CR4,Pauli (unabh.)
+karte_kand13_id,07CR4,Junghans (unabh.)
+karte_kand14_id,07CR4,Xu (unabh.)
+karte_kand15_id,07CR4,Wolff (unabh.)
+karte_kand16_id,07CR4,Akhtar (Todenhöfer)
+karte_kand17_id,07CR4,Großenbach (Basis)
+karte_kand18_id,07CR4,Pawelski (unabh.)
+karte_kand19_id,07CR4,Schulte (unabh.)
+karte_kand20_id,07CR4,Eulig (unabh.)
+tabelle_alle_id,PLwHI,
+hochburgen_id,Im2PX,
+tabelle_stadtteile_id,BM8kD,
+social1_id,028Fp,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst

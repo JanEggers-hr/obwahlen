@@ -277,6 +277,11 @@ aktualisiere_top <- function(kand_tabelle_df,top=5) {
     head(top)
   # Daten pushen
   dw_data_to_chart(daten_df,chart_id = top_id)
+  # Daten aufs Google Bucket (für CORS-Aktualisierung)
+  if (SERVER) {
+    write.csv(daten_df,"daten/top.csv")
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/top.csv gs://d.data.gcp.cloud.hr.de/obwahl_top.csv')
+  }
   # Intro_Text nicht anpassen. 
   # Balken reinrendern
   balken_text <- generiere_auszählungsbalken(gezaehlt,stimmbezirke_n,ts)
@@ -297,6 +302,10 @@ aktualisiere_tabelle_alle <- function(kand_tabelle_df) {
   # Daten und Metadaten hochladen, für die Balkengrafik mit allen 
   # Stimmen für alle Kandidaten
   dw_data_to_chart(kand_tabelle_df, chart_id = tabelle_alle_id)
+  if (SERVER) {
+    write.csv(kand_tabelle_df,"daten/kand_tabelle.csv")
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/kand_tabelle.csv gs://d.data.gcp.cloud.hr.de/obwahl_kand_tabelle.csv')
+  }
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
   # Metadaten anpassen: Farbcodes für Parteien
   metadata_chart <- dw_retrieve_chart_metadata(tabelle_alle_id)
@@ -320,7 +329,12 @@ aktualisiere_karten <- function(ergänzt_df) {
   ergänzt_f_df <- ergänzt_df %>% filter(meldungen_anz > 0)
   balken_text = generiere_auszählungsbalken(gezaehlt,stimmbezirke_n,ts)
   dw_edit_chart(chart_id = karte_sieger_id, annotate = balken_text)
+  # Daten pushen
   dw_data_to_chart(ergänzt_f_df,chart_id = karte_sieger_id)
+  if (SERVER) {
+    write.csv(ergänzt_f_df,"daten/ergaenzt.csv")
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/ergaenzt.csv gs://d.data.gcp.cloud.hr.de/obwahl_ergaenzt.csv')
+  }
   dw <- dw_publish_chart(karte_sieger_id)
   # Jetzt die Choropleth-Karten für alle Kandidierenden
   for (i in 1:nrow(switcher_df)) {
@@ -333,7 +347,12 @@ aktualisiere_karten <- function(ergänzt_df) {
 
 aktualisiere_hochburgen <- function(hochburgen_df) {
   # Das ist ziemlich geradeheraus. 
+  # Pushe Daten.
   dw_data_to_chart(hochburgen_df, chart_id = hochburgen_id)
+  if (SERVER) {
+    write.csv(hochburgen_df,"daten/hochburgen.csv")
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/hochburgen.csv gs://d.data.gcp.cloud.hr.de/obwahl_hochburgen.csv')
+  }
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
   # Metadaten anpassen: Farbcodes für Parteien
   metadata_chart <- dw_retrieve_chart_metadata(hochburgen_id)
@@ -430,7 +449,12 @@ aktualisiere_ergebnistabelle <- function(stadtteildaten_df) {
     ungroup() %>% 
     arrange(sort) %>% 
     select(-name,-sort)
+  # Daten pushen
   dw_data_to_chart(ergebnistabelle_df %>% select(-nr), chart_id = tabelle_stadtteile_id)
+  if (SERVER) {
+    write.csv(ergebnistabelle_df,"daten/stadtteile.csv")
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/stadtteile.csv gs://d.data.gcp.cloud.hr.de/obwahl_stadtteile.csv')
+  }
     # Trendergebnis? Schreibe "Trend" oder "Endergebnis" in den Titel
   gezählt <- e_tmp_df %>% pull(meldungen_anz) %>% sum(.)
   stimmbezirke_n <- e_tmp_df %>% pull(meldungen_max) %>% sum(.)

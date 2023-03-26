@@ -33,6 +33,18 @@ Grafiken:
 * Tabelle nach Kandidaten (3 beste, 3 schlechteste Stadtteile)
 * Tabelle alle Ergebnisse nach Stadtteil 
 
+### Aktualisierung via CORS/GBucket
+
+Der normale Weg, eine Datawrapper-Grafik anzuzeigen, ist: pushe die Daten auf den Datawrapper-Server - mit dw_data_to_chart() - und aktualisiere. 
+
+Alternativ kann die Grafik aus live bereitgestellten Daten in einem Google Bucket bestückt werden. Die Adressen der Dateien, die an die Grafiken übergeben werden müssen, sind: 
+
+- https://d.data.gcp.cloud.hr.de/obwahl_top.csv
+- https://d.data.gcp.cloud.hr.de/obwahl_kand_tabelle.csv
+- https://d.data.gcp.cloud.hr.de/obwahl_ergaenzt.csv
+- https://d.data.gcp.cloud.hr.de/obwahl_hochburgen.csv
+- https://d.data.gcp.cloud.hr.de/obwahl_stadtteile.csv
+
 ### Konfiguration
 
 Das Programm holt sich seine Daten aus einer Konfigurationsdatei - entweder für den Live- oder den Testbetrieb, was über die Variable TEST im Progammcode umgestellt wird. Die Indizes für die jeweile Wahl - Kandidatinnen und Kandidaten, Stadtteile und Wahllokal-Zuordnungen - liegen in einem Unterordner mit dem Namen der Wahl, als CSV oder XLSX. 
@@ -86,7 +98,7 @@ Spalte | Wert
 ---- | ----
 nr | ID des Stimmbezirks
 ortsteilnr | ID des Stadtteils
-ortsteil Name des Stadtteils
+ortsteil | Name des Stadtteils
 
 Nicht benötigte Spalten können in der Tabelle bleiben, sollten aber möglichst nicht "name" oder so heißen. 
 
@@ -107,11 +119,28 @@ Aggregation auf Stadtebene
 
 (siehe ["Sitemap"](./sitemap.md) für den Code)
 
+## Vorbereitung einer Wahl
+
+- Shapefile für die Stadt besorgen; Stimmbezirksebene; Stadtteile
+- Stadtteile aggregieren, GEOJSON generieren
+- Ordner für die Wahl im Index-Ordner; Datei Kandidaten, Stadtteile (mit Geokoordinaten für die Zentrumspunkte), Stimmbezirke (mit Zuordnung Stadtteil)
+- Kopien für die vier Grafiken anlegen: Top, alle Stimmen, Hochburgen, Stadtteile. Link zum Wahlamt nicht vergessen.
+- Leerdatei Ergebnisse nach Stadtteil vorbereiten
+- Kopie der Sieger-Karte mit GEOJSON anlegen; GEOJSON hochladen, Leerdatei hochladen. Link zum Wahlamt korrigieren. 
+- Eine erste Kopie der Choropleth-Karten nach Kandidat: Wahlamt-Link ändern und Karte und Leerdatei hochladen, dann kopieren. 
+- Kopien für alle Kandidierenden anlegen. Jeweils die Werte-Spalte des jeweiligen Kandidaten auswählen; benennen, um sie zuordnen zu können. (Farben und Namen werden automatisch nachgetragen.)
+- Indexdatei vorbereiten: Wahlname, Anzahl TOP, Dateinahmen der Index-Dateien, Datawrapper-IDs für die Karten und Diagramme
+
+## TODO
+
+- Analyse: Weshalb hängt das Polling manchmal hinterher?
+- Aufruf mit Parametern ermöglichen ("main.R obwahl_ffm_2023")
+- Oneshot-Variante für Kassel
+
+- Auswertung Briefwahldaten
 
 ## Nice-To-Have 
 
-- Vergleich letzte Kommunalwahl
 - Zusatzfeature: Briefwahlprognostik - wieviele Stimmen fehlen vermutlich noch?
 - Shapefiles KS, DA verbessern
-- Datensparsamere Alternativ-CURL-Poll-Datei (zB mit dem Gesamtergebnis)
-- Mehr Licht in den Choropleth-Karten farbabhängig
+- Vergleich letzte Kommunalwahl regulär

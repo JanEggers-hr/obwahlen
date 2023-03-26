@@ -11,18 +11,40 @@ p_load(DatawRappr)
 p_load(curl)
 p_load(magick)
 p_load(openxlsx)
+p_load(R.utils)
 
 rm(list=ls())
-
-TEST = TRUE
-DO_PREPARE_MAPS = FALSE
-
-
 
 # Aktuelles Verzeichnis als workdir
 setwd(this.path::this.dir())
 # Aus dem R-Verzeichnis eine Ebene rauf
 setwd("..")
+
+# Lies Kommandozeilen-Parameter: 
+# (Erweiterte Funktion aus dem R.utils-Paket)
+args = R.utils::commandArgs(asValues = TRUE)
+if (length(args)!=0) { 
+  if (any(c("h","help","HELP") %in% names(args))) {
+    cat("Parameter: \n",
+        "--TEST schaltet Testbetrieb ein\n",
+        "--DO_PREPARE_MAPS schaltet Generierung der Switcher ein\n",
+        "wahl_name=<name> holt Index-Dateien aus dem Verzeichnis ./index/<name>\n\n")
+  }
+  TEST <- "TEST" %in% names(args)
+  DO_PREPARE_MAPS <- "DO_PREPARE_MAPS" %in% names(args)
+  if ("wahl_name" %in% names(args)) {
+    wahl_name <- args[["wahl_name"]]
+    if (!dir.exists(paste0("index/",wahl_name))) stop("Kein Index-Verzeichnis für ",wahl_name)
+  }
+} 
+
+# Defaults
+if (!exists("wahl_name")) wahl_name = "obwahl_ffm_stichwahl_2023"
+if (!exists("TEST")) TEST = FALSE
+if (!exists("DO_PREPARE_MAPS")) DO_PREPARE_MAPS = FALSE
+NO_SOCIAL = TRUE
+
+
 
 # Logfile anlegen, wenn kein Test
 # if (!TEST) {

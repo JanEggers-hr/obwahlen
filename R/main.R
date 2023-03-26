@@ -16,7 +16,7 @@ p_load(R.utils)
 rm(list=ls())
 
 TEST = FALSE
-DO_PREPARE_MAPS = TRUE
+DO_PREPARE_MAPS = FALSE
 
 
 
@@ -85,7 +85,7 @@ if (DO_PREPARE_MAPS) {
 while (gezaehlt < stimmbezirke_n) {
   check = tryCatch(
     { # Zeitstempel der Daten holen
-      ts_daten <- check_for_timestamp(stimmbezirke_url)
+      ts_daten <- check_for_timestamp(stimmbezirke_url) + hours(1)
     },
     warning = function(w) {teams_warning(w,title=paste0(wahl_name,": CURL-Polling"))},
     error = function(e) {teams_warning(e,title=paste0(wahl_name,": CURL-Polling"))}
@@ -107,6 +107,7 @@ dw_publish_chart(top_id)
 
 # Logging beenden
 if (!TEST) {
+  cat("OK: FERTIG - alle Stimmbezirke ausgezählt: ",as.character(ts),"\n")
   sink()
   sink(type="message")
   file.rename("obwahl.log","obwahl_success.log")

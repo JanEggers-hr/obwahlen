@@ -1,0 +1,37 @@
+name,value,comment
+wahl_name,obwahl_ffm_2023,Welche Wahl?
+stimmbezirke_url,https://votemanager-ffm.ekom21cdn.de/2023-03-05/06412000/daten/opendata/Open-Data-06412000-OB-Wahl-Wahlbezirk.csv?ts=1677904123448,URL Daten-CSV Stimmbezirke
+wahlberechtigt,508182,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,250000,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+kandidaten_fname,kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+datawrapper_fname,datawrapper.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,zuordnung_wahllokale.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,stadtteile.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-03-05 16:00:00,Beginn der Auszählung
+top5_id,2DYBQ,
+karte_sieger_id,ANKmx,
+karte_kand1_id,RcvQp,Rottmann (Grüne)
+karte_kand2_id,jrm2v,Becker (CDU)
+karte_kand3_id,bKR8r,Josef (SPD)
+karte_kand4_id,etN3J,Mehler-Würzbach (Linke)
+karte_kand5_id,3mydT,Pürsün (FDP)
+karte_kand6_id,K3aCw,Lobenstein (AfD)
+karte_kand7_id,vtG4Y,Pfeiffer (BFF)
+karte_kand8_id,tRHeI,Tanczos (PARTEI)
+karte_kand9_id,v4Y5m,Schwichtenberg (Gartenpartei)
+karte_kand10_id,g3iBN,Wirth (unabh.)
+karte_kand11_id,4LxcN,Camara (FPF)
+karte_kand12_id,RZDF7,Pauli (unabh.)
+karte_kand13_id,F86gf,Junghans (unabh.)
+karte_kand14_id,bLPXL,Xu (unabh.)
+karte_kand15_id,Ktufa,Wolff (unabh.)
+karte_kand16_id,MO41j,Akhtar (Todenhöfer)
+karte_kand17_id,ccrfL,Großenbach (Basis)
+karte_kand18_id,q2S6m,Pawelski (unabh.)
+karte_kand19_id,697CL,Schulte (unabh.)
+karte_kand20_id,3lMmu,Eulig (unabh.)
+tabelle_alle_id,7kRPR,
+hochburgen_id,oB3KH,
+tabelle_stadtteile_id,LiXnz,
+social1_id,2DYBQ,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst

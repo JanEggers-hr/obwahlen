@@ -25,10 +25,20 @@
 # - wahlberechtigt - Zahl der Wahlberechtigen (kommt Sonntag)
 # - briefwahl - Zahl der Briefwahlstimmen (kommt Sonntag)
 
-if (TEST) {
-  config_df <- read_csv("index/config_test.csv")
+# Falls der Parameter wahl_name noch nicht definiert ist, 
+# setze ihn erst mal auf das derzeitige Verzeichnis. 
+if (exists("wahl_name")) {
+  index_pfad = paste0("index/",wahl_name,"/")
 } else {
-  config_df <- read_csv("index/config.csv")
+  index_pfad = paste0("index/")
+}
+
+# Lies die Indexdatei aus dem Verzeichnis wahl_name. 
+# Falls keines angegeben: aus dem aktuellen Verzeichnis
+if (TEST) {
+  config_df <- read_csv(paste0(index_pfad,"config_test.csv"))
+} else {
+  config_df <- read_csv(paste0(index_pfad,"config.csv"))
 }
 for (i in c(1:nrow(config_df))) {
   # Erzeuge neue Variablen mit den Namen und Werten aus der CSV

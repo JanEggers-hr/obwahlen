@@ -8,6 +8,8 @@ Dazu Rechtsklick auf den Layer; Koordinatensystem WGS84, exportieren
 3. Stadtteile generieren
 Menü "Vektor", "Geometrieverarbeitungswerkzeuge", "Auflösen" - und dann in der Dialogbox auswählen "Felder auflösen [optional]", und dann die Attribute hinzufügen, nach denen zusammengeführt werden soll. 
 
+Nach den Attributen schauen - die Ortsteilnr. ist ein String, kein Integer! Rechtsklick auf den neuen Layer; Eigenschaften..., dann den "Felder..."-Editor, da oben auf das kleine Abakus-Symbol klicken, Namen für das neue Feld in Ausgabefeldname (z.B. "nr"), dann in Feld Ausdruck eintragen"to_int(Ortsbezirk)" - und OK klicken. Neues Feld wird angelegt. Dann das alte Feld löschen (auswählen, oben Klick auf Löschen-Feld).
+
 - Rechtsklick auf den Layer; Exportieren als GEOJSON - nicht vergessen, das Bezugssystem auf WGS84 umzustellen!
 - Rechtsklick auf den Layer; Export als XLSX - ggf. Geo-Attribute abschalten
 
@@ -23,3 +25,11 @@ Dann noch Geokoordinaten der Zentroidpunkte: Rechte Seite die Toolbox, dort "Vek
 
 - Brauchen eine Stadtteil-Datei mit nr,name,lon,lat (erzeugt aus den Zentroiden)
 - Brauchen einen Wahlbezirks-Zuordnung
+
+
+6. Reparatur der Darmstadt-Karte
+
+- Laden (falsche Geometrie - das erst zum Schluss fixen!)
+- Vereinfachen: Fläche
+- Auflösen
+- Löcher löschen

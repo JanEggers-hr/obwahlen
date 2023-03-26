@@ -85,7 +85,7 @@ check_for_timestamp <- function(my_url) {
     # } else {
     #   t <- tmp[stringr::str_detect(tmp,"last-modified")] %>% 
     #     stringr::str_replace("last-modified: ","") %>% 
-    #     parse_date_time("%a, %d %m %Y %H:%M:%S",tz = "CET") + hours(1)
+    #     parse_date_time("%a, %d %m %Y %H:%M:%S",tz = "CET") 
     # }
   } else { # lokale Datei
     t = file.info(my_url)$mtime %>%  as_datetime
@@ -102,14 +102,15 @@ lies_stimmbezirke <- function(stand_url = stimmbezirke_url) {
   #' Schreibt eine Meldung ins Logfile - zugleich ein Lesezeichen
   cat(as.character(now())," - Neue Daten lesen\n") # Touch logfile
   check = tryCatch(
-    { stand_df <- read_delim(stand_url, 
+    { 
+      stand_df <- read_delim(stand_url, 
                          delim = ";", escape_double = FALSE, 
                          locale = locale(date_names = "de", 
                                          decimal_mark = ",", 
                                          grouping_mark = "."), 
                          trim_ws = TRUE) %>% 
       # Spalten umbenennen, Zeitstempel-Spalte einfügen
-                    mutate(zeitstempel=ts) %>%
+                    mutate(zeitstempel=ts)  %>%
       # Sonderregel: wir haben einen Zeitstempel, die "datum"-Spalte macht
       # Probleme, weil: starts_with("D"). 
                     select(-datum) %>% 
@@ -129,7 +130,9 @@ lies_stimmbezirke <- function(stand_url = stimmbezirke_url) {
                            ungueltig = C,
                            gueltig = D,
                            # neu: alle Zeilen mit Stimmen (D1..Dn)
-                           starts_with("D"))
+                           starts_with("D")) %>% 
+        # Zusatz für Frankfurt, das die Stimmbezirksnummern als character überträgt
+        mutate(nr = as.integer(nr))
       
       },
     warning = function(w) {teams_warning(w,title="OB-Wahl: Datenakquise")},
@@ -166,8 +169,8 @@ aggregiere_stadtteildaten <- function(stimmbezirksdaten_df = stimmbezirksdaten_d
     relocate(zeitstempel,nr,name,lon,lat)
     
   # Sicherheitscheck: Warnen, wenn nicht alle Ortsteile zugeordnet
-  if (nrow(stadtteildaten_df) != nrow(stadtteile_df)) teams_warnung("Nicht alle Stadtteile zugeordnet")
-  if (nrow(stimmbezirke_df) != length(unique(stimmbezirke_df$nr))) teams_warnung("Nicht alle Stimmbezirke zugeordnet")
+  if (nrow(stadtteildaten_df) != nrow(stadtteile_df)) teams_warning("Nicht alle Stadtteile zugeordnet")
+  if (nrow(stimmbezirke_df) != length(unique(stimmbezirke_df$nr))) teams_warning("Nicht alle Stimmbezirke zugeordnet")
   cat("Stadtteildaten aggregiert.\n")
   return(stadtteildaten_df)
 }
@@ -237,7 +240,9 @@ berechne_kand_tabelle <- function(stimmbezirksdaten_df = stimmbezirksdaten_df) {
     left_join(kandidaten_df %>%  select(Nummer, Name, Parteikürzel, Farbwert), 
               by="Nummer") %>% 
     mutate(name = paste0(Name," (",Parteikürzel,")")) %>% 
-    mutate(Prozent = Stimmen / gueltig * 100) %>% 
+    mutate(Prozent = ifelse(gueltig > 0, 
+                            Stimmen / gueltig * 100,
+                            0)) %>% 
     select(Nummer, `Kandidat/in` = name, Parteikürzel, Stimmen, Prozent)
   cat("Gesamttabelle alle Kandidaten berechnet.\n")
   return(kand_tabelle_df)
@@ -355,8 +360,10 @@ hole_wahldaten <- function() {
     }
     # Stadtteil neu ausgezählt?
   }
-  meldung_s <- paste0(meldung_s,"<br><br>",
+  if (!exists("NO_SOCIAL")) {
+    meldung_s <- paste0(meldung_s,"<br><br>",
                       generiere_socialmedia())
+  }
   teams_meldung(meldung_s,title=wahl_name)
   
   check = tryCatch(
