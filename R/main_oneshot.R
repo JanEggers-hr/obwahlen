@@ -12,6 +12,8 @@ p_load(curl)
 p_load(magick)
 p_load(openxlsx)
 p_load(R.utils)
+p_load(teamr)
+p_load(jsonlite)
 
 rm(list=ls())
 
@@ -39,9 +41,9 @@ if (length(args)!=0) {
 } 
 
 # Defaults
-if (!exists("wahl_name")) wahl_name = "obwahl_ffm_stichwahl_2023"
-if (!exists("TEST")) TEST = FALSE
-if (!exists("DO_PREPARE_MAPS")) DO_PREPARE_MAPS = FALSE
+if (!exists("wahl_name")) wahl_name = "obwahl"
+TEST = TRUE
+DO_PREPARE_MAPS = TRUE
 NO_SOCIAL = TRUE
 
 

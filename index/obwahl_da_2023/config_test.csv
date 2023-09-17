@@ -1,0 +1,27 @@
+name,value,comment
+wahl_name,obwahl_da_2023,Welche Wahl?
+stimmbezirke_url,https://www.eggers-elektronik.de/files/test.csv,URL Daten-CSV Stimmbezirke
+wahlberechtigt,115316,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,10589,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+top,5,Anzahl der Top-Kandidaten in den Darstellungen
+kandidaten_fname,da-kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,da-zuordnung.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,da-stadtteile.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-03-12 16:00:00,Beginn der Auszählung
+top_id,028Fp,
+karte_sieger_id,7gscI,
+karte_kand1_id,6h5Sq,Kolmer (Grüne)
+karte_kand2_id,DLFKL,Benz (SPD)
+karte_kand3_id,DLFKL,Wandrey (CDU)
+karte_kand4_id,DLFKL,Franke (Linke)
+karte_kand5_id,DLFKL,Klötzner (Volt)
+karte_kand6_id,DLFKL,Lau (UFFBASSE)
+karte_kand7_id,DLFKL,Hesse-Hanbuch (FDP)
+karte_kand8_id,DLFKL,Steiner (PARTEI)
+karte_kand9_id,DLFKL,Ziemek (WGD)
+karte_kand10_id,DLFKL,Uhl (FW)
+tabelle_alle_id,PLwHI,
+hochburgen_id,Im2PX,
+tabelle_stadtteile_id,BM8kD,
+social1_id,028Fp,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst

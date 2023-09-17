@@ -1,0 +1,27 @@
+name,value,comment
+wahl_name,obwahl_da_2023,Welche Wahl?
+stimmbezirke_url,https://votemanager-da.ekom21cdn.de/2023-03-19/06411000/daten/opendata/Open-Data-06411000-Oberbuergermeisterwahl-Wahlbezirk.csv?ts=1679046358908,URL Daten-CSV Stimmbezirke
+wahlberechtigt,114535,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,24000,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+top,5,Anzahl der Top-Kandidaten in den Darstellungen
+kandidaten_fname,da-kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,da-zuordnung.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,da-stadtteile.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-03-19 16:00:00,Beginn der Auszählung
+top_id,QP1bJ,
+karte_sieger_id,l5K3r,
+karte_kand1_id,tNKgk,Kolmer (Grüne)
+karte_kand2_id,ixI8a,Benz (SPD)
+karte_kand3_id,Ka71G,Wandrey (CDU)
+karte_kand4_id,iP90C,Franke (Linke)
+karte_kand5_id,Jxvok,Klötzner (Volt)
+karte_kand6_id,nTqG8,Lau (UFFBASSE)
+karte_kand7_id,ELm25,Hesse-Hanbuch (FDP)
+karte_kand8_id,XG3Fk,Steiner (PARTEI)
+karte_kand9_id,xjq0s,Ziemek (WGD)
+karte_kand10_id,noqpW,Uhl (FW)
+tabelle_alle_id,rTsdq,
+hochburgen_id,floHv,
+tabelle_stadtteile_id,D9r7V,
+social1_id,Ts1oS,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst

@@ -1,3 +1,4 @@
+.gitignore
 # History files
 .Rhistory
 .Rapp.history
@@ -47,4 +48,4 @@ vignettes/*.pdf
 /vorlagen/
 /daten/
 /png/
-/R/Vorbereitung/
+/R/Vorbereitung/jugend-forscht.Rmd

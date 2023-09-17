@@ -1,5 +1,7 @@
 # obwahlen
 
+(Stand: 9.9.2023)
+
 R-Code, um den Auszählungsstand hessischer Bürgermeisterwahlen in Echtzeit abzurufen und mit Datawrapper darzustellen (Frankfurt, Kassel Darmstadt)
 
 Benötigt: 
@@ -19,6 +21,8 @@ Eine Falle, in die ich zunächst gestolpert bin: Neben normalen Stimmbezirken - 
 Wir setzen Datawrapper zur Ausgabe der Grafiken ein, das auch unter Last äußerst stabil läuft und eigentlich immer gut aussieht (corona-erprobt). Um die Grafiken vom Skript aktualisieren zu lassen, muss man in DataWRAPPER einen API-Token generieren und im R-Environment hinterlegen - dazu das Paket ```DatawRappr``` von [Github](https://github.com/munichrocker/DatawRappr) installieren, laden, und ```datawrapper_auth("abcdef")``` aufrufen (statt "abcdef" natürlich das API-Token.)
 
 Die Datawrapper-Darstellungen müssen derzeit noch von Hand angelegt werden - im Fall der Karten mit einem korrekten Shapefile als .geojson. Mehr bei [Datawrapper](https://academy.datawrapper.de/article/145-how-to-upload-your-own-map); wie man mit QGIS aus einem .shp-File ein .geojson mit Zentrierpunkten und Tabellen erstellt, [ist stichpunktartig hier dokumentiert](howto_shapefile.md)
+
+Wenn die Datawrapper-Karten einmal angelegt sind, werden sie vom Vorbereitungs-Skript in die richtige Form gebracht - Parteifarben, Fortschrittsbalken, Beschriftung wird alles vom Code generiert. 
 
 ## Ordnerstruktur
 
@@ -77,7 +81,7 @@ tabelle_stadtteile_id | Die Datawrapper-ID für die Tabelle mit den Gesamtergebn
 social1_id | Für Social Media: ID der Top-Säulengrafik
 social2_id | Für Social Media: ID einer Kopie der Gesamt-Tabelle/Balkengrafik
 
-- Tabelle kandidaten.xlsx (im Unterordner mit dem Wahlnamen) enthält folgende Spalten: 
+- Tabelle ```index/wahlname/kandidaten.csv``` (also z.B. index/obwahl_of_2023/kandidaten.csv) enthält folgende Spalten: 
 Spalte | Wert
 ---- | ----
 Nummer | laufende Nr. des Kandidierenden nach Wahlzettel als ID
@@ -88,7 +92,7 @@ Partei | Vollständiger Parteiname (derzeit nicht verwendet)
 Farbwert | Die Kampagnenfarbe bzw. die Farbe für die Darstellungen des Kandidierenden als Hex-RGB-String, also z.B. "#B92837"
 URL | Verlinkung auf den Hintergrundartikel zum Kandidaten (derzeit nicht verwendet)
 
-- Die Stadtteil-Datei kann man aus QGIS exportieren, wenn man das Shapefile erstellt (CSV oder XLSX):
+```index/wahlname/stadtteile.csv```- Die Stadtteil-Datei kann man aus QGIS exportieren, wenn man das Shapefile erstellt (CSV oder XLSX):
 
 Spalte | Wert
 ---- | ----
@@ -97,7 +101,7 @@ name | Name des Stadtteils (dient auch als ID, also auf Tippfehler achten!)
 lon | Längengrad des Zentrierpunkts für den Stadtteil
 lat | Breitengrad des Zentrierpunkts für den Stadtteil
 
-- Die Stimmbezirks-Datei enthält die Zuordnungen für die Wahlbezirke zu Stadtteilen und wird aus der Open-Data-Beispieldatei des votemanagers erstellt: 
+```index/wahlname/zuordnung_wahllokale.csv```- Die Stimmbezirks-Datei enthält die Zuordnungen für die Wahlbezirke zu Stadtteilen und wird aus der Open-Data-Beispieldatei des votemanagers erstellt: 
 
 Spalte | Wert
 ---- | ----
@@ -138,14 +142,9 @@ Aggregation auf Stadtebene
 
 ## TODO
 
-- Analyse: Weshalb hängt das Polling manchmal hinterher?
 - Aufruf mit Parametern ermöglichen ("main.R obwahl_ffm_2023")
-- Oneshot-Variante für Kassel
-
-- Auswertung Briefwahldaten
 
 ## Nice-To-Have 
 
 - Zusatzfeature: Briefwahlprognostik - wieviele Stimmen fehlen vermutlich noch?
-- Shapefiles KS, DA verbessern
 - Vergleich letzte Kommunalwahl regulär

@@ -1,0 +1,19 @@
+name,value,comment
+wahl_name,obwahl_ks_stichwahl_2023,Welche Wahl?
+stimmbezirke_url,https://votemanager-ks.ekom21cdn.de/2023-03-12/06611000/daten/opendata/Open-Data-06611000-Stichwahl-zum-Oberbuergermeister-Wahlbezirk.csv?ts=1679659542062,URL Daten-CSV Stimmbezirke
+wahlberechtigt,147463,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,39092,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+top,1,Anzahl der Top-Kandidaten in den Darstellungen
+kandidaten_fname,kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,wahlbezirke.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,ks-stadtteile.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-03-26 16:00:00,Beginn der Auszählung
+top_id,VGUTe,
+karte_sieger_id,KqTwC,DUMMY
+karte_kand1_id,7xFA2,Schoeller Zustimmung
+karte_kand2_id,0na1W,Carqueville
+tabelle_alle_id,ViRl3,
+hochburgen_id,HGEM0,
+tabelle_stadtteile_id,mr0FY,
+social1_id,VGUTe,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst

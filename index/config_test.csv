@@ -1,23 +1,24 @@
 name,value,comment
-wahl_name,obwahl_ks_2023,Welche Wahl?
-stimmbezirke_url,https://www.eggers-elektronik.de/files/test.csv,URL Daten-CSV Stimmbezirke
-wahlberechtigt,147463,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
-briefwahl,39092,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
-kandidaten_fname,kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
-zuordnung_fname,wahlbezirke.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
-stadtteile_fname,ks-stadtteile.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
-startdatum,2023-01-01 18:00:00 CET,Beginn der Auszählung
-top,6,
-top_id,028Fp,
-karte_sieger_id,7gscI,
-karte_kand1_id,hM9SE,Schöller
-karte_kand2_id,07CR4,Carqueville
-karte_kand3_id,whgzp,Kühne-Hörmann
-karte_kand4_id,5CpYu,Bock
-karte_kand5_id,pc6vH,Käufler
-karte_kand6_id,sEJhl,Geselle
-tabelle_alle_id,PLwHI,
-hochburgen_id,Im2PX,
-tabelle_stadtteile_id,BM8kD,
-social1_id,028Fp,5 stärkste
+wahl_name,obwahl_of_2023,Welche Wahl?
+stimmbezirke_url,./testdaten/test.csv,URL Daten-CSV Stimmbezirke
+wahlberechtigt,74279,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,30000,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+top,4,Anzahl der Top-Kandidaten in den Darstellungen
+kandidaten_fname,of_kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,of_zuordnung.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,of_stadtteile.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-09-15 16:00:00,Beginn der Auszählung
+top_id,uNQX6,„Toptorte“
+karte_sieger_id,08FFZ,
+karte_kand1_id,FSFX1,Schwenke (SPD)
+karte_kand2_id,j3E4e,Bruszynski (CDU)
+karte_kand3_id,yf9Z3,Erinç-Çiftçi (LINKE)
+karte_kand4_id,XAnsE,Schaper-Herget (Ofa)
+tabelle_alle_id,rack2,Alle Stimmen mit Balken
+hochburgen_id,ZnhAX,"Tabelle stärkste, schwächste"
+tabelle_stadtteile_id,PNtz1,
+social1_id,8Fckl,5 stärkste
 social2_id,S9BbQ,Alle Stimmen angepasst
+stadtteil_str,Wahllokal,ggf. Ersatz für die Bezeichnung „Stadtteil“
+obwahl_q_name,Wahlamt der Stadt Offenbach,
+obwahl_q_url,https://votemanager-da.ekom21cdn.de/2021-03-14/06413000/html5/OpenDataInfo.html,

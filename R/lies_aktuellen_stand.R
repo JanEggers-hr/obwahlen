@@ -81,14 +81,15 @@ check_for_timestamp <- function(my_url) {
       h <- new_handle()
       # Das funktioniert, holt aber alle Daten -> hohe Last
       t <- curl_fetch_memory(my_url,handle=h)$modified %>% 
-        as_datetime()
+        as_datetime() + hours(1)
     # } else {
     #   t <- tmp[stringr::str_detect(tmp,"last-modified")] %>% 
     #     stringr::str_replace("last-modified: ","") %>% 
     #     parse_date_time("%a, %d %m %Y %H:%M:%S",tz = "CET") 
     # }
   } else { # lokale Datei
-    t = file.info(my_url)$mtime %>%  as_datetime
+    t = file.info(my_url)$ctime %>%  as_datetime
+    print(t)
   }
   return(t)
 }
@@ -293,7 +294,7 @@ berechne_hochburgen <- function(stadtteildaten_df = stadtteildaten_df) {
 hole_wahldaten <- function() {
       # Hole und archiviere die Stimmbezirks-Daten; 
       # erzeuge ein df mit den Stimmen nach Stadtteil. 
-      stimmbezirksdaten_df <<- lies_stimmbezirke(stimmbezirke_url)
+      stimmbezirksdaten_df <<- lies_stimmbezirke(stimmbezirke_url) 
       gezaehlt <<- stimmbezirksdaten_df %>% pull(meldungen_anz) %>% sum(.)
       archiviere(stimmbezirksdaten_df,paste0("daten/",wahl_name,"/"))
       kand_tabelle_df <<- berechne_kand_tabelle(stimmbezirksdaten_df)

@@ -1,5 +1,7 @@
 # Was ist wo? Die Sitemap für das Projekt
 
+(Stand: 9.9.2023)
+
 ## Programme
 ...liegen im Ordner "R":
 

@@ -1,0 +1,19 @@
+name,value,comment
+wahl_name,obwahl_ffm_stichwahl_2023,Welche Wahl?
+stimmbezirke_url,https://votemanager-ffm.ekom21cdn.de/2023-03-05/06412000/daten/opendata/Open-Data-06412000-OB-Stichwahl-Wahlbezirk.csv?ts=1679658148857,URL Daten-CSV Stimmbezirke
+wahlberechtigt,508182,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,250000,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+kandidaten_fname,kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,ffm_zuordnung_wahllokale.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,ffm_stadtteile.csv,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-03-05 16:00:00,Beginn der Auszählung
+top,2,
+top_id,d6Xab,
+karte_sieger_id,LVCv7,
+karte_kand1_id,yltxI,Becker (CDU)
+karte_kand2_id,E4OuF,Josef (SPD)
+tabelle_alle_id,Ws7uW,
+hochburgen_id,318FI,
+tabelle_stadtteile_id,vSNkO,
+social1_id,mswAL,Stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst

@@ -3,6 +3,23 @@
 #' Die Funktionen, um die Grafiken zu aktualisieren - und Hilfsfunktionen
 #' 
 
+
+# Sonderbehandlung für OF: 
+#
+# Hier sind die Stimmbezirke leider überhaupt nicht an den Stadtteilen
+# ausgerichtet - deshalb wird nach Wahllokal gruppiert. 
+# Und es gibt ein "Wahllokal" mit allen Briefwahl-Ergebnissen, weil
+# die Briefwahl-Bezirke leider auch komplett quer zugeordnet sind - 
+# und nicht etwa so, dass man sie klar einem Wahllokal zuordnen könnte.
+# 'Historische Gründe' schulterzuckt die Offenbacher Stadtverwaltung.
+#
+# Also brauchen wir eine Möglichkeit, den String "Stadtteil" durch "Ortsteil"
+# oder "Wahllokal" zu ersetzen. 
+#---- String "Stadtteil" ggf. ersetzen ----
+if (!exists("stadtteil_str")) {
+  stadtteil_str <- "Stadtteil"
+}
+
 #---- Generiere den Fortschrittsbalken ----
 
 
@@ -95,9 +112,12 @@ link_text <- function(id,id_colour,text) {
 generiere_switcher <- function(switcher_df,selected = 0) {
   # Ist der Switcher auf 0 - der Stärkste-Kandidaten-Übersichtskarte?
   if (selected == 0) {
-    text <- link_text(karte_sieger_id,"#F0F0FF","<strong>Sieger nach Stadtteil</strong>")
+    text <- link_text(karte_sieger_id,"#F0F0FF",
+                      paste0("<strong>Sieger nach ",
+                             stadtteil_str,"</strong>"))
   } else {
-    text <- link_text(karte_sieger_id,"#333333","Sieger nach Stadtteil")
+    text <- link_text(karte_sieger_id,"#333333",
+                      paste0("Sieger nach ",stadtteil_str))
   }
   for (i in 1:nrow(switcher_df)) {
     if (i == selected) {
@@ -127,9 +147,24 @@ karten_titel_html <- function(kandidat_s) {
   # TBD
 }
 
+variablerize <- function(name,partei) {
+  # Formt aus Namen und Parteikürzel einen Datawrapper-
+  # Variablennamen.
+  # Aus Leerzeichen und Bindestrichen werden Unterstriche
+  # Aus Großbuchstaben werden Kleinbuchstaben
+  # Aus Sonderzeichen wird nix
+  name <- gsub("[ \\-]","_",name) %>% 
+    tolower(.) %>% 
+    iconv("latin1", "ASCII", sub="")
+  partei <- gsub("[ \\-]","_",partei) %>% 
+    tolower(.) %>% 
+    iconv("latin1", "ASCII", sub="")
+  return(paste0(name,"_",partei))
+}
+
 karten_body_html <- function(top = 5) {
   # TBD
-  text <- "<p style='font-weight: 700;'>Ausgezählt: {{ meldungen_anz }} von {{ meldungen_max }} Wahllokalen{{ meldungen_max != meldungen_anz ? ' - Trendergebnis' : ''}}</p>"
+  text <- "<p style='font-weight: 700;'>Ausgezählt: {{ meldungen_anz }} von {{ meldungen_max }} Stimmbezirken{{ meldungen_max != meldungen_anz ? ' - Trendergebnis' : ''}}</p>"
   # Generiere String mit allen Prozent-Variablen
   prozent_s <- paste0(paste0("prozent",1:top),collapse=",")
   # Tabellenöffnung
@@ -156,7 +191,7 @@ karten_body_html <- function(top = 5) {
 # Schreibe die Switcher und die Farbtabellen in alle betroffenen Datawrapper-Karten
 vorbereitung_alle_karten <- function() {
   # Vorbereiten: df mit Kandidierenden und Datawrapper-ids
-  # Alle Datawrapper-IDs in einen Vektor extrahieren
+  # Alle Datawrapper-IDs  der Kandidaten-Karten in einen Vektor extrahieren
   id_df <- config_df %>% 
     filter(str_detect(name,"_kand[0-9]+")) %>% 
     mutate(Nummer = as.integer(str_extract(name,"[0-9]+"))) %>% 
@@ -166,7 +201,7 @@ vorbereitung_alle_karten <- function() {
     select(Nummer, Vorname, Name, Parteikürzel, Farbwert) %>% 
     left_join(id_df, by="Nummer")
   text_pre <- "<strong>Wählen Sie eine Karte über die Felder:</strong><br>"
-  text_post <- "<br><br>Klick auf den Stadtteil zeigt, wer dort führt"
+  text_post <- "<br><br>Klick auf einzelnes Gebiet zeigt, wer dort führt"
   balken_text <- generiere_auszählungsbalken(gezaehlt,stimmbezirke_n,ts)
   dw_intro=paste0(text_pre,generiere_switcher(switcher_df,0),text_post)
   # Farbskala und Mouseover anpassen
@@ -178,10 +213,19 @@ vorbereitung_alle_karten <- function() {
   visualize[["colorscale"]][["map"]] <- setNames(as.list(kandidaten_df$Farbwert),
                                                  kandidaten_df$Name)
   # Karten-Tooltipp anpassen
-  # visualize[["tooltip"]][["title"]] <- karten_title_html(kandidat_s)
+  visualize[["tooltip"]][["title"]] <- "{{ name }} - {{ meldungen_anz < meldungen_max ? (meldungen_anz == 0 ? \"KEINE DATEN\" : \"TREND\") : \"\" }}"
   visualize[["tooltip"]][["body"]] <- karten_body_html(top)
+  # Orte löschen
+  visualize[["labels"]][["places"]] <- NULL
   
-  dw_edit_chart(karte_sieger_id,intro = dw_intro, annotate = balken_text, visualize = visualize)
+  # Karten-Titel und Metadaten anpassen
+  dw_edit_chart(karte_sieger_id,
+                title = paste0("Trend: Ergebnis nach ",stadtteil_str),
+                intro = dw_intro, 
+                annotate = balken_text, 
+                visualize = visualize,
+                source_name = obwahl_q_name,
+                source_url = obwahl_q_url)
   # dw_data_to_chart()
   # dw_publish_chart(karte_sieger_id)
   
@@ -192,8 +236,8 @@ vorbereitung_alle_karten <- function() {
     titel_s <- paste0(switcher_df$Vorname[i]," ",
                      switcher_df$Name[i]," (",
                      switcher_df$Parteikürzel[i],") - ",
-                     "Ergebnis nach Stadtteil")
-    kandidat_s <- paste0(switcher_df$name[i],
+                     "Ergebnis nach ",stadtteil_str)
+    kandidat_s <- paste0(switcher_df$Name[i],
                          " (",
                          switcher_df$Parteikürzel[i])
     metadata_chart <- dw_retrieve_chart_metadata(switcher_df$dw_id[i])
@@ -205,13 +249,23 @@ vorbereitung_alle_karten <- function() {
     visualize[["colorscale"]][["colors"]][[1]]$color <- aufhellen(switcher_df$Farbwert[i])
     visualize[["colorscale"]][["colors"]][[1]]$position <- 0
     # Karten-Tooltipp anpassen
-    # visualize[["tooltip"]][["title"]] <- karten_title_html(kandidat_s)
+    visualize[["tooltip"]][["title"]] <- paste0(
+      "{{ name }} - ",
+      switcher_df$Name[i]," (",
+      switcher_df$Parteikürzel[i],"): {{ FORMAT(",
+      variablerize(switcher_df$Name[i],switcher_df$Parteikürzel[i]), 
+      "\"0.0%\") }}"
+    )
+    # Orte löschen
+    visualize[["labels"]][["places"]] <- NULL
     visualize[["tooltip"]][["body"]] <- karten_body_html(top)
     dw_edit_chart(switcher_df$dw_id[i],
                   title = titel_s,
                   intro = dw_intro,
                   visualize = visualize,
-                  annotate = balken_text)
+                  annotate = balken_text,
+                  source_name = obwahl_q_name,
+                  source_url = obwahl_q_url)
     # dw_data_to_chart()
     # dw_publish_chart(switcher_df$dw_id)
   }
@@ -246,7 +300,9 @@ generiere_socialmedia <- function() {
     setNames(as.list(kandidaten_df$Farbwert), 
              paste0(kandidaten_df$Name," (",
                     kandidaten_df$Parteikürzel,")"))
-  dw_edit_chart(chart_id = social2_id, visualize = visualize)
+  dw_edit_chart(chart_id = social2_id, visualize = visualize,
+                source_name = obwahl_q_name,
+                source_url = obwahl_q_url)
   dw_data_to_chart(kand_tabelle_df, chart_id = social2_id)
   social2_png <- dw_export_chart(social2_id,type = "png",unit="px",mode="rgb", scale = 1, 
                   width = 640, height = 640, plain = TRUE, transparent = T)
@@ -258,13 +314,13 @@ generiere_socialmedia <- function() {
   #...und auf den Bucket schieben. 
   if (SERVER) {
     system(paste0('gsutil -h "Cache-Control:no-cache, max_age=0" ',
-                  'cp ',social1_fname,' gs://d.data.gcp.cloud.hr.de/', social1_fname))
+                  'cp ',social1_fname,' gs://d.data.gcp.cloud.hr.de/obwahl/', social1_fname))
     system(paste0('gsutil -h "Cache-Control:no-cache, max_age=0" ',
-                  'cp ',social2_fname,' gs://d.data.gcp.cloud.hr.de/', social2_fname))
+                  'cp ',social2_fname,' gs://d.data.gcp.cloud.hr.de/obwahl/', social2_fname))
   }
-  linktext <- paste0("<a href='https://d.data.gcp.cloud.hr.de/",social1_fname,
+  linktext <- paste0("<a href='https://d.data.gcp.cloud.hr.de/obwahl/",social1_fname,
                      "'>Download Social-Grafik 1 (5 stärkste)</a><br/>",
-                     "<a href='https://d.data.gcp.cloud.hr.de/",social2_fname,
+                     "<a href='https://d.data.gcp.cloud.hr.de/obwahl/",social2_fname,
                      "'>Download Social-Grafik 2 (alle Stimmen)</a><br/>")
   return(linktext)
 }
@@ -280,7 +336,7 @@ aktualisiere_top <- function(kand_tabelle_df,top=5) {
   # Daten aufs Google Bucket (für CORS-Aktualisierung)
   if (SERVER) {
     write.csv(daten_df,"daten/top.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/top.csv gs://d.data.gcp.cloud.hr.de/obwahl_top.csv')
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/top.csv gs://d.data.gcp.cloud.hr.de/obwahl/top.csv')
   }
   # Intro_Text nicht anpassen. 
   # Balken reinrendern
@@ -294,7 +350,9 @@ aktualisiere_top <- function(kand_tabelle_df,top=5) {
     setNames(as.list(kandidaten_df$Farbwert), 
              paste0(kandidaten_df$Name," (",
                     kandidaten_df$Parteikürzel,")"))
-  dw_edit_chart(chart_id = top_id,annotate = balken_text, visualize=visualize)
+  dw_edit_chart(chart_id = top_id,annotate = balken_text, visualize=visualize,
+                source_name = obwahl_q_name,
+                source_url = obwahl_q_url)
   dw <- dw_publish_chart(chart_id = top_id)
 }
 
@@ -304,7 +362,7 @@ aktualisiere_tabelle_alle <- function(kand_tabelle_df) {
   dw_data_to_chart(kand_tabelle_df, chart_id = tabelle_alle_id)
   if (SERVER) {
     write.csv(kand_tabelle_df,"daten/kand_tabelle.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/kand_tabelle.csv gs://d.data.gcp.cloud.hr.de/obwahl_kand_tabelle.csv')
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/kand_tabelle.csv gs://d.data.gcp.cloud.hr.de/obwahl/kand_tabelle.csv')
   }
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
   # Metadaten anpassen: Farbcodes für Parteien
@@ -318,7 +376,9 @@ aktualisiere_tabelle_alle <- function(kand_tabelle_df) {
   # Irrtümlich waren die Werte auch noch in visualize[["custom-color"]] gespeichert.
   visualize[["custom-colors"]] <- NULL
   visualize[["color-category"]] <- NULL
-  dw_edit_chart(chart_id = tabelle_alle_id, annotate = balken_text, visualize = visualize)
+  dw_edit_chart(chart_id = tabelle_alle_id, annotate = balken_text, visualize = visualize,                  
+                source_name = obwahl_q_name,
+                source_url = obwahl_q_url)
   dw_publish_chart(chart_id = tabelle_alle_id)
 }
 
@@ -328,17 +388,21 @@ aktualisiere_karten <- function(ergänzt_df) {
   # Die noch überhaupt nicht gezählten Bezirke ausfiltern
   ergänzt_f_df <- ergänzt_df %>% filter(meldungen_anz > 0)
   balken_text = generiere_auszählungsbalken(gezaehlt,stimmbezirke_n,ts)
-  dw_edit_chart(chart_id = karte_sieger_id, annotate = balken_text)
+  dw_edit_chart(chart_id = karte_sieger_id, annotate = balken_text,
+                source_name = obwahl_q_name,
+                source_url = obwahl_q_url)
   # Daten pushen
   dw_data_to_chart(ergänzt_f_df,chart_id = karte_sieger_id)
   if (SERVER) {
     write.csv(ergänzt_f_df,"daten/ergaenzt.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/ergaenzt.csv gs://d.data.gcp.cloud.hr.de/obwahl_ergaenzt.csv')
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/ergaenzt.csv gs://d.data.gcp.cloud.hr.de/obwahl/ergaenzt.csv')
   }
   dw <- dw_publish_chart(karte_sieger_id)
   # Jetzt die Choropleth-Karten für alle Kandidierenden
   for (i in 1:nrow(switcher_df)) {
-    dw_edit_chart(chart_id=switcher_df$dw_id[i],annotate = balken_text)
+    dw_edit_chart(chart_id=switcher_df$dw_id[i],annotate = balken_text,
+                  source_name = obwahl_q_name,
+                  source_url = obwahl_q_url)
     dw_data_to_chart(ergänzt_f_df, chart_id = switcher_df$dw_id[i])
     dw <- dw_publish_chart(switcher_df$dw_id[i])
   }
@@ -351,7 +415,7 @@ aktualisiere_hochburgen <- function(hochburgen_df) {
   dw_data_to_chart(hochburgen_df, chart_id = hochburgen_id)
   if (SERVER) {
     write.csv(hochburgen_df,"daten/hochburgen.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/hochburgen.csv gs://d.data.gcp.cloud.hr.de/obwahl_hochburgen.csv')
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/hochburgen.csv gs://d.data.gcp.cloud.hr.de/obwahl/hochburgen.csv')
   }
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
   # Metadaten anpassen: Farbcodes für Parteien
@@ -370,6 +434,9 @@ aktualisiere_hochburgen <- function(hochburgen_df) {
   cat("Hochburgen-Grafik neu publiziert\n")
 }
 
+
+# Experiment: Die Ergebnistabellen-Daten und -Metadaten bei Server-Betrieb live anlegen und auf den 
+# google bucket ausspielen. 
 aktualisiere_ergebnistabelle <- function(stadtteildaten_df) {
   # Nr des Stadtteils, Stadtteil, Wahlbeteiligung (Info), Ergebnis
   # Wahlbeteiligung und Ergebnis sind jeweils HTML-Text mit den Daten
@@ -449,21 +516,42 @@ aktualisiere_ergebnistabelle <- function(stadtteildaten_df) {
     ungroup() %>% 
     arrange(sort) %>% 
     select(-name,-sort)
-  # Daten pushen
-  dw_data_to_chart(ergebnistabelle_df %>% select(-nr), chart_id = tabelle_stadtteile_id)
-  if (SERVER) {
-    write.csv(ergebnistabelle_df,"daten/stadtteile.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/stadtteile.csv gs://d.data.gcp.cloud.hr.de/obwahl_stadtteile.csv')
-  }
-    # Trendergebnis? Schreibe "Trend" oder "Endergebnis" in den Titel
   gezählt <- e_tmp_df %>% pull(meldungen_anz) %>% sum(.)
   stimmbezirke_n <- e_tmp_df %>% pull(meldungen_max) %>% sum(.)
   ts <- stadtteildaten_df %>% pull(zeitstempel) %>% first()
   titel_s <- paste0(ifelse(gezählt < stimmbezirke_n,"TREND: ",""),
-                    "Ergebnisse nach Stadtteil")
-  dw_edit_chart(chart_id = tabelle_stadtteile_id,title = titel_s,
-                annotate=generiere_auszählung_nurtext(gezählt,stimmbezirke_n,ts))
-  dw_publish_chart(tabelle_stadtteile_id)
-  cat("Ergebnistabelle nach Stadtteil publiziert\n")
+                    "Ergebnisse nach ",stadtteil_str)
+  # Daten pushen
+  #
+  # CODE FÜR DEN TEST: Lege eine alternative Stadtteile-Grafik an und pushe auf die
+  test_stadtteile_id = "tV59P"
+  # In dieser Datawrapper-Tabelle trage ich von Hand die CSV- und JSON-Quellen übers Backend ein.
+  # Sollte etwas schief gehen, liegt die Standard-Tabellengrafik tabelle_stadtteile_id 
+  # (Offenbach: "PNtz1") bereit und kann in Sophora eingetragen werden. 
+  if (SERVER) {
+    # Wenn Server: CSV auf den Google Bucket
+    write.csv(ergebnistabelle_df,"daten/stadtteile.csv")
+    # Leere Liste (für das JSON mit den Metadaten-Änderungen)
+    metadata <- list()
+    metadata[["describe"]][["intro"]][[1]] <- "Ergebnisse aufgeschlüsselt nach Wahllokal bzw. Briefwahl"
+    metadata[["annotate"]][["notes"]][[1]] <- generiere_auszählung_nurtext(gezählt,stimmbezirke_n,ts)
+    metadata[["title"]] <- paste0(titel_s,".")
+    # JSON-File anlegen...
+    metadata_json <- toJSON(metadata,force=T)
+    write(metadata_json,"daten/stadtteile.json")
+    # ...und auf den Bucket kopieren
+    n <- now()
+    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/stadtteile.* gs://d.data.gcp.cloud.hr.de/obwahl/')
+    # Gib die Zeitdifferenz in die Logdatei/auf die Konsole aus
+    print(now()-n)
+  } # else {
+  { # Code für den Test immer ausführen, um alternativ eine normal 
+    dw_data_to_chart(ergebnistabelle_df %>% select(-nr), chart_id = tabelle_stadtteile_id)
+    # Trendergebnis? Schreibe "Trend" oder "Endergebnis" in den Titel
+    dw_edit_chart(chart_id = tabelle_stadtteile_id,title = titel_s,
+                  annotate=generiere_auszählung_nurtext(gezählt,stimmbezirke_n,ts))
+    dw_publish_chart(tabelle_stadtteile_id)
+  }
+  cat("Ergebnistabelle nach",stadtteil_str,"publiziert\n")
   return(ergebnistabelle_df)
 }

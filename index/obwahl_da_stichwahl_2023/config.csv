@@ -1,0 +1,19 @@
+name,value,comment
+wahl_name,obwahl_da_stichwahl_2023,Welche Wahl?
+stimmbezirke_url,https://votemanager-da.ekom21cdn.de/2023-03-19/06411000/daten/opendata/Open-Data-06411000-Oberbuergermeisterstichwahl-Wahlbezirk.csv?ts=1680081844379,URL Daten-CSV Stimmbezirke
+wahlberechtigt,113726,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,21864,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+top,2,Anzahl der Top-Kandidaten in den Darstellungen
+kandidaten_fname,da-kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,da-zuordnung.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,da-stadtteile.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2023-03-19 16:00:00,Beginn der Auszählung
+top_id,8Fckl,„Toptorte“
+karte_sieger_id,polGP,
+karte_kand1_id,BjnRx,Kolmer (Grüne)
+karte_kand2_id,aqbzb,Benz (SPD)
+tabelle_alle_id,gLoxr,Alle Stimmen mit Balken
+hochburgen_id,gkhiB,
+tabelle_stadtteile_id,MDpFd,
+social1_id,8Fckl,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst

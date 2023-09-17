@@ -29,8 +29,11 @@
 # setze ihn erst mal auf das derzeitige Verzeichnis. 
 if (exists("wahl_name")) {
   index_pfad = paste0("index/",wahl_name,"/")
+  if (!dir.exists(index_pfad)) {
+    index_pfad <- "index/"
+  }
 } else {
-  index_pfad = paste0("index/")
+  index_pfad <- "index/"
 }
 
 # Lies die Indexdatei aus dem Verzeichnis wahl_name. 
@@ -94,4 +97,9 @@ kandidaten_df <- lies_daten(paste0("index/",wahl_name,"/",kandidaten_fname))
 
 # Läufst du auf dem Server?
 SERVER <- dir.exists("/home/jan_eggers_hr_de") 
+
+# Keine Quell-URL?
+if (!exists("obwahl_q_url")) {
+  obwahl_q_url <- stimmbezirke_url
+}
 

@@ -12,18 +12,42 @@ p_load(curl)
 p_load(magick)
 p_load(openxlsx)
 p_load(R.utils)
+p_load(jsonlite)
 
 rm(list=ls())
-
-TEST = FALSE
-DO_PREPARE_MAPS = FALSE
-
-
 
 # Aktuelles Verzeichnis als workdir
 setwd(this.path::this.dir())
 # Aus dem R-Verzeichnis eine Ebene rauf
 setwd("..")
+
+# Lies Kommandozeilen-Parameter: 
+# (Erweiterte Funktion aus dem R.utils-Paket)
+TEST = FALSE
+DO_PREPARE_MAPS = FALSE
+NO_SOCIAL = TRUE
+args = R.utils::commandArgs(asValues = TRUE)
+if (length(args)!=0) { 
+  if (any(c("h","help","HELP") %in% names(args))) {
+    cat("Parameter: \n",
+        "--TEST schaltet Testbetrieb ein\n",
+        "--DO_PREPARE_MAPS schaltet Generierung der Switcher ein\n",
+        "wahl_name=<name> holt Index-Dateien aus dem Verzeichnis ./index/<name>\n\n")
+  }
+  TEST <- "TEST" %in% names(args)
+  DO_PREPARE_MAPS <- "DO_PREPARE_MAPS" %in% names(args)
+  if ("wahl_name" %in% names(args)) {
+    wahl_name <- args[["wahl_name"]]
+    if (!dir.exists(paste0("index/",wahl_name))) stop("Kein Index-Verzeichnis für ",wahl_name)
+  }
+} 
+
+# Defaults
+if (!exists("wahl_name")) wahl_name = "obwahl"
+
+
+
+
 
 # Logfile anlegen, wenn kein Test
 if (!TEST) {
@@ -85,7 +109,7 @@ if (DO_PREPARE_MAPS) {
 while (gezaehlt < stimmbezirke_n) {
   check = tryCatch(
     { # Zeitstempel der Daten holen
-      ts_daten <- check_for_timestamp(stimmbezirke_url) + hours(1)
+      ts_daten <- check_for_timestamp(stimmbezirke_url)
     },
     warning = function(w) {teams_warning(w,title=paste0(wahl_name,": CURL-Polling"))},
     error = function(e) {teams_warning(e,title=paste0(wahl_name,": CURL-Polling"))}
