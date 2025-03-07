@@ -33,3 +33,20 @@ Dann noch Geokoordinaten der Zentroidpunkte: Rechte Seite die Toolbox, dort "Vek
 - Vereinfachen: Fläche
 - Auflösen
 - Löcher löschen
+
+# Nachschlag: Wiesbaden
+
+Hier hatte ich zwei Shapefiles: 
+- einen für die Ortsbezirke
+- einen für die Stimmbezirke
+
+Das Matching der beiden Layer funktioniert über: 
+
+- Menü Vektor/Datenmanagement/Attribute über Position verknüpfen.
+
+Oben: Ortsbezirke
+Unten: Wahlbezirke
+
+Auswahlkriterium: "enthält" bzw. "sind innerhalb"
+
+Wenn wie bei Wiesbaden Fehler in den Shapes sind, crasht das Ganze. Der Versuch zu reparieren (mit der Toolbox-Funktion "Geometrie reparieren") funktionierte nicht; also erst einmal: prüfen, dann matchen nur mit den gültigen, und von Hand die fehlenden ergänzen. 

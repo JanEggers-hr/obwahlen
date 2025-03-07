@@ -41,12 +41,21 @@ Kleine Regelverletzung der Import-Routine: Der Titel der Grafik - der in den Dat
 
 Wenn man die externe Datenanlieferung einschaltet, werden folgende Keys gesetzt: 
 
-- json[["content"]][["externalData"]] = <URL CSV>
-- json[["content"]][["metadata"]][["data"]][["upload-method"]] = "external-data"
-- json[["content"]][["metadata"]][["data"]][["external-data"]] = <URL CSV>
-- json[["content"]][["metadata"]][["data"]][["external-metadata"]] = <URL JSON>
-- json[["content"]][["metadata"]][["data"]][["use-datawrapper-cdn"]] = FALSE
+```
+  data <- d$content$metadata$data
+  # Einträge für Metadaten
+  data$`upload-method` <- "external-data"
+  data$`external-data` <- csv_path
+  data$`external-metadata` <- json_path
+  data$`use-datawrapper-cdn` <- FALSE
+  dw_edit_chart(dw_id, data=data)
+```
 
-Leider kommt man über die Funktion dw_edit_chart() an diese Keys nicht ran - da 
-kann man nur den visualize-Zweig verändern. Also muss ich eine Funktion dw_write_metadata()
-dazubasteln - das muss ich noch lösen...
+Die Funktion ```dw_edit_chart()``` ermöglicht den Zugriff auf diesen Metadaten-Zweig über den ```data=``` Parameter. 
+
+Möglicherweise zusätzlich nötig?
+
+- ```json[["content"]][["externalData"]] = <URL CSV>```
+
+
+

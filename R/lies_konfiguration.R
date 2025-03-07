@@ -97,6 +97,8 @@ kandidaten_df <- lies_daten(paste0("index/",wahl_name,"/",kandidaten_fname))
 
 # Läufst du auf dem Server?
 SERVER <- dir.exists("/home/jan_eggers_hr_de") 
+GS_PATH <- "https://d.data.gcp.cloud.hr.de/obwahl/"
+GS_PATH_GS <- str_replace(GS_PATH,"^https","gs")
 
 # Keine Quell-URL?
 if (!exists("obwahl_q_url")) {

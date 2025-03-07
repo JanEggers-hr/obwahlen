@@ -30,10 +30,12 @@ if (length(args)!=0) {
     cat("Parameter: \n",
         "--TEST schaltet Testbetrieb ein\n",
         "--DO_PREPARE_MAPS schaltet Generierung der Switcher ein\n",
+        "--FORCE_PUBLISH erzwingt Datawrapper-Republizierung aktueller Grafiken (Default: CSV/JSON)\n",
         "wahl_name=<name> holt Index-Dateien aus dem Verzeichnis ./index/<name>\n\n")
   }
   TEST <- "TEST" %in% names(args)
   DO_PREPARE_MAPS <- "DO_PREPARE_MAPS" %in% names(args)
+  FORCE_PUBLISH <- "FORCE_PUBLISH" %in% names(args)
   if ("wahl_name" %in% names(args)) {
     wahl_name <- args[["wahl_name"]]
     if (!dir.exists(paste0("index/",wahl_name))) stop("Kein Index-Verzeichnis für ",wahl_name)
@@ -49,12 +51,12 @@ NO_SOCIAL = TRUE
 
 
 # Logfile anlegen, wenn kein Test
-# if (!TEST) {
-#   logfile = file("obwahl.log")
-#   sink(logfile, append=T)
-#   sink(logfile, append=T, type="message")
-#   
-# }
+if (!TEST) {
+  logfile = file("obwahl.log")
+  sink(logfile, append=T)
+  sink(logfile, append=T, type="message")
+
+}
 
 # Messaging-Funktionen einbinden
 source("R/messaging.R")
@@ -67,6 +69,11 @@ check = tryCatch(
   },
   warning = function(w) {teams_warning(w,title="OBWAHL: Warnung beim Lesen der Konfigurationsdatei")},
   error = function(e) {teams_error(e,title="OBWAHL: Konfigurationsdatei nicht gelesen!")})
+
+# WICHTIG: Wenn FORCE_PUBLISH gesetzt ist, Serverfunktionalität ausschalten
+if (FORCE_PUBLISH) {
+  SERVER <- FALSE
+}
 
 # Funktionen einbinden
 # Das könnte man auch alles hier in diese Datei schreiben, aber ist es übersichtlicher.
@@ -112,8 +119,18 @@ check = tryCatch(
   )  
     # Zeitstempel aktualisieren, Datenverarbeitung anstoßen
 ts <- ts_daten
-# Hole die neuen Daten
 
+#' Hole die neuen Daten: Hauptfunktion aus lies_aktuellen_stand.R
+#' Ablauf: 
+#' main_oneshot.R
+#'  +- lies_konfiguration.R # Lies config.csv und die drei Indexdaten
+#'  ?- wenn DO_PREPARE_MAPS: 
+#'      +- aktualisiere_karten.R::vorbereitung_alle_karten()
+#'          +- Lege die einzelnen Choropleth-Karten an
+#'          +- Bastele den Switcher und baue die Master-Stadtteilkarte
+#'  +- In ts den Zeitstempel der derzeitigen Daten
+#'  +- lies_aktuellen_stand.R::hole_wahldaten()
+#'      +- 
 hole_wahldaten()
 
 # EOF

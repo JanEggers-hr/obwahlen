@@ -22,7 +22,9 @@ if (Sys.getenv("WEBHOOK_OBWAHL") == "") {
 
 teams_meldung <- function(...,title="OB-Wahl-Update") {
   cc <- teamr::connector_card$new(hookurl = t_txt)
-  if (TEST) {title <- paste0("TEST: ",title) }
+  if (exists("TEST")) {
+    if (TEST) {title <- paste0("TEST: ",title) }
+  } 
   cc$title(paste0(title," - ",lubridate::with_tz(lubridate::now(),
                                                  "Europe/Berlin")))
   alert_str <- paste0(...)

@@ -20,3 +20,5 @@ tabelle_stadtteile_id,PNtz1,
 social1_id,8Fckl,5 stärkste
 social2_id,S9BbQ,Alle Stimmen angepasst
 stadtteil_str,Wahllokal,ggf. Ersatz für die Bezeichnung „Stadtteil“
+obwahl_q_name,Wahlamt der Stadt Offenbach,
+obwahl_q_url,https://votemanager-da.ekom21cdn.de/2021-03-14/06413000/html5/OpenDataInfo.html,

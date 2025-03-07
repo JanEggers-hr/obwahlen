@@ -1,0 +1,30 @@
+name,value,comment
+wahl_name,obwahl_wi,Welche Wahl?
+stimmbezirke_url,https://frankruft.de/wi/test.csv,URL Daten-CSV Stimmbezirke
+wahlberechtigt,185000,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,80000,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+top,5,Anzahl der Top-Kandidaten in den Darstellungen
+kandidaten_fname,kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,wahlbezirke.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,wi_ortsbezirke.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2025-03-07 10:00:00,Beginn der Auszählung
+top_id,Dt0zH,„Toptorte“
+karte_sieger_id,rfzlb,Symbolkarte mit Stadtteilsiegern
+karte_kand1_id,l2Ymx,"von Debschitz (CDU, FDP)"
+karte_kand2_id,eZSnp,Bonnet (GRÜNE)
+karte_kand3_id,wkIsR,Mende (SPD)
+karte_kand4_id,hnrbs,Offermanns (AxD)
+karte_kand5_id,Mfqz0,von Seemen (Linke)
+karte_kand6_id,UslxD,Hill (Pro Auto)
+karte_kand7_id,x6YJb,Haker (PARTEI)
+karte_kand8_id,IeqRI,Krebber (ULW)
+karte_kand9_id,wz2I5,Gutzeit (FWG)
+karte_kand10_id,AGfdz,Bedürftig (FREIE WÄHLER)
+tabelle_alle_id,RZZtA,Alle Stimmen mit Balken
+hochburgen_id,Z64hO,"Tabelle stärkste, schwächste"
+tabelle_stadtteile_id,O9pR1,
+social1_id,8Fckl,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst
+stadtteil_str,Ortsbezirk,ggf. Ersatz für die Bezeichnung „Stadtteil“
+obwahl_q_name,Stadt Wiesbaden/ekom21,
+obwahl_q_url,https://wahlergebnisse.wiesbaden.de/web/guest/oberbuergermeisterwahlen/2025?s=2071dfb3b1cccfc9a07bb334c7f47e84d10b412f,

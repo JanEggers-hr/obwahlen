@@ -25,6 +25,7 @@ setwd("..")
 # (Erweiterte Funktion aus dem R.utils-Paket)
 TEST = FALSE
 DO_PREPARE_MAPS = FALSE
+FORCE_PUBLISH = FALSE
 NO_SOCIAL = TRUE
 args = R.utils::commandArgs(asValues = TRUE)
 if (length(args)!=0) { 
@@ -32,10 +33,12 @@ if (length(args)!=0) {
     cat("Parameter: \n",
         "--TEST schaltet Testbetrieb ein\n",
         "--DO_PREPARE_MAPS schaltet Generierung der Switcher ein\n",
+        "--FORCE_PUBLISH erzwingt Datawrapper-Republizierung aktueller Grafiken (Default: CSV/JSON)\n",
         "wahl_name=<name> holt Index-Dateien aus dem Verzeichnis ./index/<name>\n\n")
   }
   TEST <- "TEST" %in% names(args)
   DO_PREPARE_MAPS <- "DO_PREPARE_MAPS" %in% names(args)
+  FORCE_PUBLISH <- "FORCE_PUBLISH" %in% names(args)
   if ("wahl_name" %in% names(args)) {
     wahl_name <- args[["wahl_name"]]
     if (!dir.exists(paste0("index/",wahl_name))) stop("Kein Index-Verzeichnis für ",wahl_name)
@@ -68,6 +71,11 @@ check = tryCatch(
   },
   warning = function(w) {teams_warning(w,title="OBWAHL: Warnung beim Lesen der Konfigurationsdatei")},
   error = function(e) {teams_error(e,title="OBWAHL: Konfigurationsdatei nicht gelesen!")})
+
+# WICHTIG: Wenn FORCE_PUBLISH gesetzt ist, Serverfunktionalität ausschalten
+if (FORCE_PUBLISH) {
+  SERVER <- FALSE
+}
 
 # Funktionen einbinden
 # Das könnte man auch alles hier in diese Datei schreiben, aber ist es übersichtlicher.

@@ -94,6 +94,8 @@ check_for_timestamp <- function(my_url) {
   return(t)
 }
 
+#---- Aktualisierungs-Funktion ----
+
 
 #---- Lese-Funktionen ----
 

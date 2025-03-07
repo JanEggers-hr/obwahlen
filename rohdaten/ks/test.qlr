@@ -1,0 +1,281 @@
+<!DOCTYPE qgis-layer-definition>
+<qlr>
+  <layer-tree-group name="" expanded="1" checked="Qt::Checked">
+    <customproperties>
+      <Option/>
+    </customproperties>
+    <layer-tree-layer id="ks_wahlbezirke_deb75aa7_b12d_4d03_9a8a_03cf8a859aa2" name="ks-wahlbezirke" expanded="1" source="./ks-wahlbezirke.geojson" legend_split_behavior="0" legend_exp="" checked="Qt::Checked" providerKey="ogr" patch_size="-1,-1">
+      <customproperties>
+        <Option/>
+      </customproperties>
+    </layer-tree-layer>
+  </layer-tree-group>
+  <maplayers>
+    <maplayer simplifyDrawingTol="1" symbologyReferenceScale="-1" simplifyAlgorithm="0" geometry="Polygon" styleCategories="AllStyleCategories" readOnly="0" simplifyDrawingHints="1" refreshOnNotifyMessage="" autoRefreshTime="0" wkbType="MultiPolygon" minScale="100000000" autoRefreshEnabled="0" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" labelsEnabled="0" simplifyLocal="1" refreshOnNotifyEnabled="0" legendPlaceholderImage="" type="vector" maxScale="0">
+      <extent>
+        <xmin>9.35102289923803909</xmin>
+        <ymin>51.26038059711165573</ymin>
+        <xmax>9.57008420671443183</xmax>
+        <ymax>51.3694030047725505</ymax>
+      </extent>
+      <wgs84extent>
+        <xmin>9.35102289923803909</xmin>
+        <ymin>51.26038059711165573</ymin>
+        <xmax>9.57008420671443183</xmax>
+        <ymax>51.3694030047725505</ymax>
+      </wgs84extent>
+      <id>ks_wahlbezirke_deb75aa7_b12d_4d03_9a8a_03cf8a859aa2</id>
+      <datasource>./ks-wahlbezirke.geojson</datasource>
+      <keywordList>
+        <value></value>
+      </keywordList>
+      <layername>ks-wahlbezirke</layername>
+      <srs>
+        <spatialrefsys>
+          <wkt>GEOGCRS["WGS 84",ENSEMBLE["World Geodetic System 1984 ensemble",MEMBER["World Geodetic System 1984 (Transit)"],MEMBER["World Geodetic System 1984 (G730)"],MEMBER["World Geodetic System 1984 (G873)"],MEMBER["World Geodetic System 1984 (G1150)"],MEMBER["World Geodetic System 1984 (G1674)"],MEMBER["World Geodetic System 1984 (G1762)"],ELLIPSOID["WGS 84",6378137,298.257223563,LENGTHUNIT["metre",1]],ENSEMBLEACCURACY[2.0]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,2],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],USAGE[SCOPE["Horizontal component of 3D system."],AREA["World."],BBOX[-90,-180,90,180]],ID["EPSG",4326]]</wkt>
+          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
+          <srsid>3452</srsid>
+          <srid>4326</srid>
+          <authid>EPSG:4326</authid>
+          <description>WGS 84</description>
+          <projectionacronym>longlat</projectionacronym>
+          <ellipsoidacronym>EPSG:7030</ellipsoidacronym>
+          <geographicflag>true</geographicflag>
+        </spatialrefsys>
+      </srs>
+      <resourceMetadata>
+        <identifier>Wahlbezirke</identifier>
+        <parentidentifier></parentidentifier>
+        <language>DEU</language>
+        <type>dataset</type>
+        <title>Wahlbezirke</title>
+        <abstract>REQUIRED: A brief narrative summary of the data set.
+
+REQUIRED: A summary of the intentions with which the data set was developed.</abstract>
+        <keywords vocabulary="gmd:topicCategory">
+          <keyword>REQUIRED: Common-use word or phrase used to describe the subject of the data set.</keyword>
+        </keywords>
+        <links>
+          <link description="" size="" url="file://\\intern.stadt-kassel.de\Data\Data6\62\AG_Daten_GIS\Blockdaten\Geodatabase\Stat.EinheitenArcGis.gdb" name="Personal-Geodatabase-Feature-Class" format="" mimeType="" type="Local Area Network"/>
+        </links>
+        <fees></fees>
+        <constraints type="Zugriff">REQUIRED: Restrictions and legal prerequisites for accessing the data set.</constraints>
+        <rights>REQUIRED: Restrictions and legal prerequisites for using the data set after access is granted.</rights>
+        <encoding></encoding>
+        <crs>
+          <spatialrefsys>
+            <wkt>PROJCRS["ETRS89 / UTM zone 32N",BASEGEOGCRS["ETRS89",ENSEMBLE["European Terrestrial Reference System 1989 ensemble",MEMBER["European Terrestrial Reference Frame 1989"],MEMBER["European Terrestrial Reference Frame 1990"],MEMBER["European Terrestrial Reference Frame 1991"],MEMBER["European Terrestrial Reference Frame 1992"],MEMBER["European Terrestrial Reference Frame 1993"],MEMBER["European Terrestrial Reference Frame 1994"],MEMBER["European Terrestrial Reference Frame 1996"],MEMBER["European Terrestrial Reference Frame 1997"],MEMBER["European Terrestrial Reference Frame 2000"],MEMBER["European Terrestrial Reference Frame 2005"],MEMBER["European Terrestrial Reference Frame 2014"],ELLIPSOID["GRS 1980",6378137,298.257222101,LENGTHUNIT["metre",1]],ENSEMBLEACCURACY[0.1]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],ID["EPSG",4258]],CONVERSION["UTM zone 32N",METHOD["Transverse Mercator",ID["EPSG",9807]],PARAMETER["Latitude of natural origin",0,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8801]],PARAMETER["Longitude of natural origin",9,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8802]],PARAMETER["Scale factor at natural origin",0.9996,SCALEUNIT["unity",1],ID["EPSG",8805]],PARAMETER["False easting",500000,LENGTHUNIT["metre",1],ID["EPSG",8806]],PARAMETER["False northing",0,LENGTHUNIT["metre",1],ID["EPSG",8807]]],CS[Cartesian,2],AXIS["(E)",east,ORDER[1],LENGTHUNIT["metre",1]],AXIS["(N)",north,ORDER[2],LENGTHUNIT["metre",1]],USAGE[SCOPE["Engineering survey, topographic mapping."],AREA["Europe between 6°E and 12°E: Austria; Belgium; Denmark - onshore and offshore; Germany - onshore and offshore; Norway including - onshore and offshore; Spain - offshore."],BBOX[38.76,6,84.33,12]],ID["EPSG",25832]]</wkt>
+            <proj4>+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</proj4>
+            <srsid>2105</srsid>
+            <srid>25832</srid>
+            <authid>EPSG:25832</authid>
+            <description>ETRS89 / UTM zone 32N</description>
+            <projectionacronym>utm</projectionacronym>
+            <ellipsoidacronym>EPSG:7019</ellipsoidacronym>
+            <geographicflag>false</geographicflag>
+          </spatialrefsys>
+        </crs>
+        <extent>
+          <spatial maxy="51.37009199999999964" miny="51.25999199999999689" crs="EPSG:25832" maxz="0" minz="0" minx="9.35066999999999915" dimensions="2" maxx="9.57051700000000061"/>
+        </extent>
+      </resourceMetadata>
+      <provider encoding="UTF-8">ogr</provider>
+      <vectorjoins/>
+      <layerDependencies/>
+      <dataDependencies/>
+      <expressionfields/>
+      <map-layer-style-manager current="default">
+        <map-layer-style name="default"/>
+      </map-layer-style-manager>
+      <auxiliaryLayer/>
+      <metadataUrls/>
+      <flags>
+        <Identifiable>1</Identifiable>
+        <Removable>1</Removable>
+        <Searchable>1</Searchable>
+        <Private>0</Private>
+      </flags>
+      <temporal accumulate="0" mode="0" startField="" enabled="0" durationUnit="min" fixedDuration="0" limitMode="0" durationField="" endField="" startExpression="" endExpression="">
+        <fixedRange>
+          <start></start>
+          <end></end>
+        </fixedRange>
+      </temporal>
+      <renderer-v2 forceraster="0" referencescale="-1" enableorderby="0" symbollevels="0" type="singleSymbol">
+        <symbols>
+          <symbol name="0" force_rhr="0" type="fill" alpha="1" clip_to_extent="1">
+            <data_defined_properties>
+              <Option type="Map">
+                <Option name="name" type="QString" value=""/>
+                <Option name="properties"/>
+                <Option name="type" type="QString" value="collection"/>
+              </Option>
+            </data_defined_properties>
+            <layer enabled="1" pass="0" locked="0" class="SimpleFill">
+              <Option type="Map">
+                <Option name="border_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                <Option name="color" type="QString" value="145,82,45,255"/>
+                <Option name="joinstyle" type="QString" value="bevel"/>
+                <Option name="offset" type="QString" value="0,0"/>
+                <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
+                <Option name="offset_unit" type="QString" value="MM"/>
+                <Option name="outline_color" type="QString" value="35,35,35,255"/>
+                <Option name="outline_style" type="QString" value="solid"/>
+                <Option name="outline_width" type="QString" value="0.26"/>
+                <Option name="outline_width_unit" type="QString" value="MM"/>
+                <Option name="style" type="QString" value="solid"/>
+              </Option>
+              <prop v="3x:0,0,0,0,0,0" k="border_width_map_unit_scale"/>
+              <prop v="145,82,45,255" k="color"/>
+              <prop v="bevel" k="joinstyle"/>
+              <prop v="0,0" k="offset"/>
+              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
+              <prop v="MM" k="offset_unit"/>
+              <prop v="35,35,35,255" k="outline_color"/>
+              <prop v="solid" k="outline_style"/>
+              <prop v="0.26" k="outline_width"/>
+              <prop v="MM" k="outline_width_unit"/>
+              <prop v="solid" k="style"/>
+              <data_defined_properties>
+                <Option type="Map">
+                  <Option name="name" type="QString" value=""/>
+                  <Option name="properties"/>
+                  <Option name="type" type="QString" value="collection"/>
+                </Option>
+              </data_defined_properties>
+            </layer>
+          </symbol>
+        </symbols>
+        <rotation/>
+        <sizescale/>
+      </renderer-v2>
+      <customproperties>
+        <Option/>
+      </customproperties>
+      <blendMode>0</blendMode>
+      <featureBlendMode>0</featureBlendMode>
+      <layerOpacity>1</layerOpacity>
+      <geometryOptions removeDuplicateNodes="0" geometryPrecision="0">
+        <activeChecks type="StringList">
+          <Option type="QString" value=""/>
+        </activeChecks>
+        <checkConfiguration/>
+      </geometryOptions>
+      <legend showLabelLegend="0" type="default-vector"/>
+      <referencedLayers/>
+      <fieldConfiguration>
+        <field name="OBJECTID" configurationFlags="None">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="Wahlbezirk" configurationFlags="None">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="Stat_Bez" configurationFlags="None">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="Ortsbezirk" configurationFlags="None">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="Ortsbezi_1" configurationFlags="None">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="Shape_Leng" configurationFlags="None">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+        <field name="Shape_Area" configurationFlags="None">
+          <editWidget type="">
+            <config>
+              <Option/>
+            </config>
+          </editWidget>
+        </field>
+      </fieldConfiguration>
+      <aliases>
+        <alias name="" index="0" field="OBJECTID"/>
+        <alias name="" index="1" field="Wahlbezirk"/>
+        <alias name="" index="2" field="Stat_Bez"/>
+        <alias name="" index="3" field="Ortsbezirk"/>
+        <alias name="" index="4" field="Ortsbezi_1"/>
+        <alias name="" index="5" field="Shape_Leng"/>
+        <alias name="" index="6" field="Shape_Area"/>
+      </aliases>
+      <defaults>
+        <default expression="" applyOnUpdate="0" field="OBJECTID"/>
+        <default expression="" applyOnUpdate="0" field="Wahlbezirk"/>
+        <default expression="" applyOnUpdate="0" field="Stat_Bez"/>
+        <default expression="" applyOnUpdate="0" field="Ortsbezirk"/>
+        <default expression="" applyOnUpdate="0" field="Ortsbezi_1"/>
+        <default expression="" applyOnUpdate="0" field="Shape_Leng"/>
+        <default expression="" applyOnUpdate="0" field="Shape_Area"/>
+      </defaults>
+      <constraints>
+        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="OBJECTID"/>
+        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="Wahlbezirk"/>
+        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="Stat_Bez"/>
+        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="Ortsbezirk"/>
+        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="Ortsbezi_1"/>
+        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="Shape_Leng"/>
+        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="Shape_Area"/>
+      </constraints>
+      <constraintExpressions>
+        <constraint desc="" field="OBJECTID" exp=""/>
+        <constraint desc="" field="Wahlbezirk" exp=""/>
+        <constraint desc="" field="Stat_Bez" exp=""/>
+        <constraint desc="" field="Ortsbezirk" exp=""/>
+        <constraint desc="" field="Ortsbezi_1" exp=""/>
+        <constraint desc="" field="Shape_Leng" exp=""/>
+        <constraint desc="" field="Shape_Area" exp=""/>
+      </constraintExpressions>
+      <expressionfields/>
+      <attributeactions>
+        <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
+      </attributeactions>
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+        <columns/>
+      </attributetableconfig>
+      <conditionalstyles>
+        <rowstyles/>
+        <fieldstyles/>
+      </conditionalstyles>
+      <storedexpressions/>
+      <editform tolerant="1"></editform>
+      <editforminit/>
+      <editforminitcodesource>0</editforminitcodesource>
+      <editforminitfilepath></editforminitfilepath>
+      <editforminitcode><![CDATA[]]></editforminitcode>
+      <featformsuppress>0</featformsuppress>
+      <editorlayout>generatedlayout</editorlayout>
+      <editable/>
+      <labelOnTop/>
+      <reuseLastValue/>
+      <dataDefinedFieldProperties/>
+      <widgets/>
+      <previewExpression></previewExpression>
+      <mapTip></mapTip>
+    </maplayer>
+  </maplayers>
+</qlr>

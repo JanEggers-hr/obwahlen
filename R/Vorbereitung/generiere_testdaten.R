@@ -5,6 +5,8 @@
 #' Grafiken testen zu können. 
 #' 
 
+# ZULETZT ANGEPASST OB-WAHL WI 6.3.2025
+
 require(tidyr)
 require(dplyr)
 require(readr)
@@ -20,6 +22,10 @@ setwd(this.path::this.dir())
 # Aus dem R/Vorbereitung-Verzeichnis zwei Ebenen rauf
 setwd("../..")
 
+# Wahlnamen anpassen
+wahl_name <- "obwahl_wi"
+
+if (!exists("wahl_name")) wahl_name = "obwahl"
 source("R/lies_konfiguration.R")
 source("R/lies_aktuellen_stand.R")
 
@@ -42,7 +48,7 @@ lösche_testdaten <- function(){
   }
 }
 
-vorlage_url = "testdaten/muster.csv"
+vorlage_url = "rohdaten/wi/Open-Data-06414000-Oberbuergermeisterwahl-Wahlbezirk.csv"
 # Vorlagen laden
 # Leider geht mein Skript von Daten auf Wahllokal-Ebene aus, die Daten hier
 # sind aber auf Orts-Ebene. 
@@ -119,7 +125,7 @@ while(sum(vorlage_wahllokale_df$`anz-schnellmeldungen`) < wahllokale_max) {
     # Jetzt die Zufallswerte eintragen
     mutate(across(starts_with("D"), ~ runif(length(.), 0, 1)))   %>%
     # Normalisiere so, dass Summe = stimmen
-    mutate(summe = D1+D2+D3+D4) %>%  
+    mutate(summe = D1+D2+D3+D4+D5+D6+D7+D8+D9+D10) %>%  
     mutate(across(starts_with("D"), ~ . / summe  * stimmen)) %>% 
     mutate(across(starts_with("D"), ~ round(.))) %>% 
     select(-summe) %>% 
@@ -136,6 +142,7 @@ while(sum(vorlage_wahllokale_df$`anz-schnellmeldungen`) < wahllokale_max) {
     arrange(`gebiet-nr`)
   
   write_csv2(vorlage_wahllokale_df,
+             na="",
              paste0("testdaten/wahllokale",
                     sprintf("%02i",i),
                     ".csv"),

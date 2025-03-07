@@ -23,7 +23,9 @@ if (!exists("stadtteil_str")) {
 #---- Generiere den Fortschrittsbalken ----
 
 
-generiere_auszählungsbalken <- function(anz = gezaehlt,max_s = stimmbezirke_n,ts = ts) {
+generiere_auszählungsbalken <- function(anz = gezaehlt,
+                                        max_s = stimmbezirke_n, 
+                                        ts = ts) {
   fortschritt <- floor(anz/max_s*100)
   annotate_str <- paste0("Ausgezählt sind ",
                          # Container Fake-Balken
@@ -51,7 +53,7 @@ generiere_auszählungsbalken <- function(anz = gezaehlt,max_s = stimmbezirke_n,t
                          format.Date(ts, "%d.%m.%y, %H:%M Uhr"),
                          "</strong>"
   )
-  
+  return(annotate_str)
 }
 
 generiere_auszählung_nurtext <- function(anz = gezaehlt,max_s = stimmbezirke_n,ts = ts) {
@@ -64,8 +66,59 @@ generiere_auszählung_nurtext <- function(anz = gezaehlt,max_s = stimmbezirke_n,
                          format.Date(ts, "%d.%m.%y, %H:%M Uhr"),
                          "</strong>"
   )
-  
+  return(annotate_str)
 }
+
+#---- Grafik auf JSON/CSV umschalten
+# Magische Zutat: 
+#  temp[["content"]][["externalData"]] = "https://d.data.gcp.cloud.hr.de/obwahl_test.csv"
+#' Wenn dieser Key nicht auch gesetzt ist, hat die CSV-Anzeige ein Caching-Problem und
+#' hängt hinter den Metadaten im JSON hinterher. 
+#' 
+#' Problem: Über den dw_edit_chart Parameter kommen wir nicht dran und müssen deshalb 
+#' die eigene Funktion 
+
+remote_control <- function(dw_id) {
+    # csv konstruieren: immer die dw_id mit .csv auf dem Google-Bucket.
+  # Irgendwie fasse ich nicht, dass ich das nicht schon früher so gemacht habe. 
+  # Garantiert, dass die dw_id wirklich nur zu dieser Grafik gehört und liegen blieben kann. 
+    csv_path <- paste0(GS_PATH,dw_id,".csv")
+    # Metadaten holen
+    d <- dw_retrieve_chart_metadata(dw_id)
+    data <- d$content$metadata$data
+    # Einträge für Metadaten
+    data$`upload-method` <- "external-data"
+    data$`external-data` <- csv_path
+    data$`external-metadata` <-str_replace(csv_path,
+                                           "\\.csv",
+                                           ".json")
+    data$`use-datawrapper-cdn` <- FALSE
+    # Und jetzt die magische Zutat: 
+    #' Und jetzt die magische Zutat: 
+    #' Der externe Pfad MUSS auf externalData geschrieben werden, 
+    #' was netterweise mit dw_edit_chart undokumentiert geht, 
+    #' sonst tritt das Caching-Problem auf. 
+    dw_edit_chart(chart_id = dw_id, data = data, externalData = csv_path)
+    dw_publish_chart(dw_id)
+}
+
+local_control <- function(dw_id) {
+  # Metadaten holen
+  d <- dw_retrieve_chart_metadata(dw_id)
+  data <- d$content$metadata$data
+  # Einträge für Metadaten
+  data$`upload-method` <- "copy"
+  data$`external-data` <- ""
+  data$`external-metadata` <- ""
+  data$`use-datawrapper-cdn` <- TRUE
+  #' Link ins Datawrapper-CDN
+  dwcn_path <- paste0("https://static.dwcdn.net/data/",dw_id,".csv")
+  dw_edit_chart(chart_id = dw_id, data = data, externalData = dwcn_path)
+  dw_publish_chart(dw_id)
+}
+
+
+
 
 #---- Hilfsfunktionen: Switcher generieren, Farben anpassen ----
 # Funktion gibt Schwarz zurück, wenn Farbe hell ist, und Weiß, wenn sie 
@@ -176,7 +229,7 @@ karten_body_html <- function(top = 5) {
                              " / MAX(",
                              prozent_s,
                              ")) *100),1) }}%; background-color: {{ farbe",i,
-                             " }}; padding-bottom: 5%; padding-top: 5%; border-radius: 5px;'></div></div></td>",
+                             " }}; padding-bottom: 5%; padding-top: 5%; border-radius: 5px;'></div></td>",
                               "<td style='padding-left: 3px; text-align: right; font-size: 0.8em;'>{{ FORMAT(prozent",i,
                               ", '0.0%') }}</td></tr>")
   }
@@ -185,6 +238,7 @@ karten_body_html <- function(top = 5) {
     "</thead></table>",
     "<p>Wahlberechtigte: {{ FORMAT(wahlberechtigt, '0,0') }}, abgegebene Stimmen: {{ FORMAT(stimmen, '0,0') }}, Briefwahl: {{ FORMAT(stimmen_wahlschein, '0,0') }}, ungültig {{ FORMAT(ungueltig, '0,0') }}"
   )
+  return(text)
 } 
 
 
@@ -200,8 +254,8 @@ vorbereitung_alle_karten <- function() {
   switcher_df <<- kandidaten_df %>% 
     select(Nummer, Vorname, Name, Parteikürzel, Farbwert) %>% 
     left_join(id_df, by="Nummer")
-  text_pre <- "<strong>Wählen Sie eine Karte über die Felder:</strong><br>"
-  text_post <- "<br><br>Klick auf einzelnes Gebiet zeigt, wer dort führt"
+  text_pre <- "<strong>Wählen Sie eine Karte über die Schaltflächen:</strong><br>"
+  text_post <- "<br><br>Der Klick auf ein Gebiet zeigt, wer dort nach Stimmen führt. Die Größe des Symbols zeigt die Gesamtzahl der Stimmen im Gebiet."
   balken_text <- generiere_auszählungsbalken(gezaehlt,stimmbezirke_n,ts)
   dw_intro=paste0(text_pre,generiere_switcher(switcher_df,0),text_post)
   # Farbskala und Mouseover anpassen
@@ -215,8 +269,17 @@ vorbereitung_alle_karten <- function() {
   # Karten-Tooltipp anpassen
   visualize[["tooltip"]][["title"]] <- "{{ name }} - {{ meldungen_anz < meldungen_max ? (meldungen_anz == 0 ? \"KEINE DATEN\" : \"TREND\") : \"\" }}"
   visualize[["tooltip"]][["body"]] <- karten_body_html(top)
+  visualize[["tooltip"]][["enabled"]] <- TRUE
   # Orte löschen
   visualize[["labels"]][["places"]] <- NULL
+  # Anpassen: Symbolgröße
+  visualize[["symbol-shape"]] <- "hexagon"
+  visualize[["max-size"]] <- 40
+  axes <- metadata_chart[["content"]][["metadata"]][["axes"]]
+  # Größe der Symbole an die Zahl der gültigen Stimmen binden
+  axes[["area"]] <- "gueltig" # Gültige Stimmen
+  # ...und die Farbe an den führenden Kandidaten
+  axes[["values"]] <- "kand1"
   
   # Karten-Titel und Metadaten anpassen
   dw_edit_chart(karte_sieger_id,
@@ -239,9 +302,12 @@ vorbereitung_alle_karten <- function() {
                      "Ergebnis nach ",stadtteil_str)
     kandidat_s <- paste0(switcher_df$Name[i],
                          " (",
-                         switcher_df$Parteikürzel[i])
+                         switcher_df$Parteikürzel[i],
+                         ")")
     metadata_chart <- dw_retrieve_chart_metadata(switcher_df$dw_id[i])
     visualize <- metadata_chart[["content"]][["metadata"]][["visualize"]]
+    # Farbenliste erst mal löschen
+    visualize$colorscale$colors <- list(list(),list())
     # Zwei Farben: Parteifarbe bei Pos. 1, aufgehellte Parteifarbe
     # (zu RGB jeweils 0x40 addiert) bei Pos. 0
     visualize[["colorscale"]][["colors"]][[2]]$color <- switcher_df$Farbwert[i]
@@ -251,24 +317,60 @@ vorbereitung_alle_karten <- function() {
     # Karten-Tooltipp anpassen
     visualize[["tooltip"]][["title"]] <- paste0(
       "{{ name }} - ",
-      switcher_df$Name[i]," (",
-      switcher_df$Parteikürzel[i],"): {{ FORMAT(",
+      kandidat_s,": {{ FORMAT(",
       variablerize(switcher_df$Name[i],switcher_df$Parteikürzel[i]), 
       "\"0.0%\") }}"
     )
+    # Legende Farbskala auf Prozent
+    visualize[["legends"]][["color"]][["labelFormat"]] <- "0.0%"
     # Orte löschen
     visualize[["labels"]][["places"]] <- NULL
     visualize[["tooltip"]][["body"]] <- karten_body_html(top)
+    visualize[["tooltip"]][["enabled"]] <- TRUE
+    # Umschalten auf die entsprechende Spalte
+    visualize[["map-key-attr"]] <- "Ortsbez_Na"
+    axes <- metadata_chart[["content"]][["metadata"]][["axes"]]
+    # Index- und Wertespalte setzen
+    axes[["keys"]] <- "name"
+    axes[["values"]] <- kandidat_s
+    # Hochladen
     dw_edit_chart(switcher_df$dw_id[i],
                   title = titel_s,
                   intro = dw_intro,
                   visualize = visualize,
+                  axes = axes, 
                   annotate = balken_text,
                   source_name = obwahl_q_name,
                   source_url = obwahl_q_url)
     # dw_data_to_chart()
     # dw_publish_chart(switcher_df$dw_id)
   }
+  # Wenn Server: Alle Grafiken auf Remote-Control umschalten!
+  if (SERVER) {
+    # Alle 5 Hauptgrafiken und die Switcher-Grafiken
+    # Sieger-Map
+    remote_control(karte_sieger_id)
+    # Switcher-Choropleth-Maps
+    for (i in switcher_df$dw_id) {
+      remote_control(i)
+    }
+    remote_control(tabelle_alle_id)
+    remote_control(tabelle_stadtteile_id)
+    remote_control(hochburgen_id)
+  } else {
+    # Alle 5 Hauptgrafiken und die Switcher-Grafiken
+    # Sieger-Map
+    local_control(karte_sieger_id)
+    # Switcher-Choropleth-Maps
+    for (i in switcher_df$dw_id) {
+      local_control(i)
+    }
+    local_control(tabelle_alle_id)
+    local_control(tabelle_stadtteile_id)
+    local_control(hochburgen_id)
+    
+  }
+  
 }
 
 #---- Generiere und pushe die Grafiken für Social Media
@@ -327,59 +429,145 @@ generiere_socialmedia <- function() {
 
 #---- Datawrapper-Grafiken generieren ----
 aktualisiere_top <- function(kand_tabelle_df,top=5) {
+  # ts liegt als globale Variable vor
+  chart_id <- top_id
   daten_df <- kand_tabelle_df %>% 
     arrange(desc(Prozent)) %>% 
     select(`Kandidat/in`,Stimmenanteil = Prozent) %>% 
     head(top)
-  # Daten pushen
-  dw_data_to_chart(daten_df,chart_id = top_id)
-  # Daten aufs Google Bucket (für CORS-Aktualisierung)
-  if (SERVER) {
-    write.csv(daten_df,"daten/top.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/top.csv gs://d.data.gcp.cloud.hr.de/obwahl/top.csv')
-  }
   # Intro_Text nicht anpassen. 
+  # Titel mit Zeitstempel bzw. Endergebnis
+  if (gezaehlt < stimmbezirke_n) {
+    titel <- paste0("Trend: Ergebnis",
+                    format.Date(ts, " (Stand: %H:%M Uhr)"))
+  } else {
+    titel <- "Vorläufiges Endergebnis"
+  }
   # Balken reinrendern
   balken_text <- generiere_auszählungsbalken(gezaehlt,stimmbezirke_n,ts)
   # Metadaten anpassen: Farbcodes für Parteien
-  metadata_chart <- dw_retrieve_chart_metadata(top_id)
-  # Save the visualise path
-  visualize <- metadata_chart[["content"]][["metadata"]][["visualize"]]
-  # Der Schlüssel liegt unter custom-colors als Liste
-  visualize[["custom-colors"]] <- 
-    setNames(as.list(kandidaten_df$Farbwert), 
-             paste0(kandidaten_df$Name," (",
-                    kandidaten_df$Parteikürzel,")"))
-  dw_edit_chart(chart_id = top_id,annotate = balken_text, visualize=visualize,
-                source_name = obwahl_q_name,
-                source_url = obwahl_q_url)
-  dw <- dw_publish_chart(chart_id = top_id)
+  # Daten aufs Google Bucket (für CORS-Aktualisierung)
+  if (SERVER) {
+    # Jetzt das JSON anlegen
+    forced_meta <- list()
+    forced_meta[["title"]] <- titel
+    forced_meta[["describe"]][["byline"]] <- "Jan Eggers"
+    forced_meta[["describe"]][["source-url"]] <- obwahl_q_url
+    forced_meta[["describe"]][["source-name"]] <- obwahl_q_name
+    forced_meta[["annotate"]][["notes"]] <- balken_text
+    # Default-Farbe setzen
+    forced_meta[["visualize"]][["custom-colors"]] <- 
+      setNames(as.list(kandidaten_df$Farbwert), 
+               paste0(kandidaten_df$Name," (",
+                      kandidaten_df$Parteikürzel,")"))
+    csv_path <- paste0("daten/",chart_id,".csv")
+    json_path <- paste0("daten/",chart_id,".json")
+    write.csv(daten_df,csv_path, row.names = F)
+    system_cmd_csv <- paste0('gsutil -h "Cache-Control:no-cache, max_age=0"',
+                             ' cp daten/',
+                             chart_id,
+                             '.* ',
+                             GS_PATH_GS
+    )
+    
+    
+    # Liste in JSON - der force-Parameter ist nötig, weil R sonst darauf
+    # beharrt, dass es mit der S3-Klasse dw_chart nichts anfangen kann
+    # (obwohl die eine ganz normale Liste ist)
+    forced_meta_json <- toJSON(forced_meta,force=T)
+    write(forced_meta_json,json_path)
+    system(system_cmd_csv)
+  } else {
+    dw_data_to_chart(daten_df, chart_id = chart_id)
+    metadata_chart <- dw_retrieve_chart_metadata(chart_id)
+    # Save the visualise path
+    visualize <- metadata_chart[["content"]][["metadata"]][["visualize"]]
+    # Der Schlüssel liegt unter custom-colors als Liste
+    visualize[["custom-colors"]] <- 
+      setNames(as.list(kandidaten_df$Farbwert), 
+               paste0(kandidaten_df$Name," (",
+                      kandidaten_df$Parteikürzel,")"))
+    
+    # Daten pushen
+    dw_edit_chart(chart_id = top_id,
+                  title=titel, 
+                  annotate = balken_text, visualize=visualize,
+                  source_name = obwahl_q_name,
+                  source_url = obwahl_q_url)
+    dw <- dw_publish_chart(chart_id = top_id)
+  }
 }
 
 aktualisiere_tabelle_alle <- function(kand_tabelle_df) {
   # Daten und Metadaten hochladen, für die Balkengrafik mit allen 
   # Stimmen für alle Kandidaten
-  dw_data_to_chart(kand_tabelle_df, chart_id = tabelle_alle_id)
-  if (SERVER) {
-    write.csv(kand_tabelle_df,"daten/kand_tabelle.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/kand_tabelle.csv gs://d.data.gcp.cloud.hr.de/obwahl/kand_tabelle.csv')
+  # Titel mit Zeitstempel bzw. Endergebnis
+  chart_id <- tabelle_alle_id
+  if (gezaehlt < stimmbezirke_n) {
+    titel <- paste0("Alle bisher gezählten Stimmen",
+                    format.Date(ts, " (Stand: %H:%M Uhr)"))
+  } else {
+    titel <- "Vorläufiges Endergebnis: Alle gezählten Stimmen"
   }
+  # Keinen Balken in die Annotations rendern
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
+  intro <- "Die bislang gezählten Stimmen für alle Kandidatinnen und Kandidaten in der Reihenfolge vom Wahlzettel."
   # Metadaten anpassen: Farbcodes für Parteien
-  metadata_chart <- dw_retrieve_chart_metadata(tabelle_alle_id)
-  # Save the visualise path
-  visualize <- metadata_chart[["content"]][["metadata"]][["visualize"]]
-  visualize[["columns"]][["Prozent"]][["customColorBarBackground"]] <- NULL
-  visualize[["columns"]][["Stimmen"]][["customColorBarBackground"]] <- 
-    setNames(as.list(kandidaten_df$Farbwert), 
-             kandidaten_df$Nummer)
-  # Irrtümlich waren die Werte auch noch in visualize[["custom-color"]] gespeichert.
-  visualize[["custom-colors"]] <- NULL
-  visualize[["color-category"]] <- NULL
-  dw_edit_chart(chart_id = tabelle_alle_id, annotate = balken_text, visualize = visualize,                  
-                source_name = obwahl_q_name,
-                source_url = obwahl_q_url)
-  dw_publish_chart(chart_id = tabelle_alle_id)
+  # Jetzt das JSON anlegen
+  forced_meta <- list()
+  forced_meta[["title"]] <- titel
+  forced_meta[["describe"]][["intro"]] <- intro
+  forced_meta[["describe"]][["byline"]] <- "Jan Eggers"
+  forced_meta[["describe"]][["source-url"]] <- obwahl_q_url
+  forced_meta[["describe"]][["source-name"]] <- obwahl_q_name
+  forced_meta[["annotate"]][["notes"]] <- balken_text
+  # Default-Farbe setzen
+#  forced_meta[["visualize"]][["columns"]][["Stimmen"]][["barColor"]] <- "#707173"
+#  forced_meta[["visualize"]][["columns"]][["Stimmen"]][["customColorBarBackground"]] <- 
+#    setNames(as.list(kandidaten_df$Farbwert), 
+#             kandidaten_df$Parteikürzel)
+#  forced_meta[["visualize"]][["columns"]][["Stimmen"]][["customBarColorBy"]] <- "Parteikürzel"
+  
+  if (SERVER) {
+    csv_path <- paste0("daten/",chart_id,".csv")
+    json_path <- paste0("daten/",chart_id,".json")
+    write.csv(kand_tabelle_df,csv_path, row.names = F)
+    system_cmd_csv <- paste0('gsutil -h "Cache-Control:no-cache, max_age=0"',
+                         ' cp daten/',
+                         chart_id,
+                         '.* ',
+                         GS_PATH_GS
+                         )
+
+    
+    # Liste in JSON - der force-Parameter ist nötig, weil R sonst darauf
+    # beharrt, dass es mit der S3-Klasse dw_chart nichts anfangen kann
+    # (obwohl die eine ganz normale Liste ist)
+    forced_meta_json <- toJSON(forced_meta,force=T)
+    write(forced_meta_json,json_path)
+    system(system_cmd_csv)
+  } else {
+    dw_data_to_chart( kand_tabelle_df, chart_id = chart_id)
+    metadata_chart <- dw_retrieve_chart_metadata(chart_id)
+    # Save the visualise path
+    visualize <- metadata_chart[["content"]][["metadata"]][["visualize"]]
+    # Die Farben für die Kandidaten werden in dieser Tabelle nur für die Balkengrafiken
+    # in der Spalte "Prozent" benötigt und richten sich nach der Nummer.
+    visualize[["columns"]][["Prozent"]][["customColorBarBackground"]] <- 
+      setNames(as.list(kandidaten_df$Farbwert), 
+               kandidaten_df$Nummer)
+    visualize[["columns"]][["Stimmen"]][["barColor"]] <- "#707173"
+    visualize[["columns"]][["Stimmen"]][["customBarColorBy"]] <- "Parteikürzel"
+    
+    dw_edit_chart(chart_id = tabelle_alle_id, 
+                  title = titel,
+                  intro = intro,
+                  annotate = balken_text, visualize = visualize,                  
+                  source_name = obwahl_q_name,
+                  source_url = obwahl_q_url)
+    
+    dw_publish_chart(chart_id)
+  }
 }
 
 aktualisiere_karten <- function(ergänzt_df) {
@@ -387,56 +575,117 @@ aktualisiere_karten <- function(ergänzt_df) {
   cat("Aktualisiere Karten\n")
   # Die noch überhaupt nicht gezählten Bezirke ausfiltern
   ergänzt_f_df <- ergänzt_df %>% filter(meldungen_anz > 0)
+  chart_id <- karte_sieger_id
   balken_text = generiere_auszählungsbalken(gezaehlt,stimmbezirke_n,ts)
-  dw_edit_chart(chart_id = karte_sieger_id, annotate = balken_text,
-                source_name = obwahl_q_name,
-                source_url = obwahl_q_url)
-  # Daten pushen
-  dw_data_to_chart(ergänzt_f_df,chart_id = karte_sieger_id)
-  if (SERVER) {
-    write.csv(ergänzt_f_df,"daten/ergaenzt.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/ergaenzt.csv gs://d.data.gcp.cloud.hr.de/obwahl/ergaenzt.csv')
-  }
-  dw <- dw_publish_chart(karte_sieger_id)
-  # Jetzt die Choropleth-Karten für alle Kandidierenden
-  for (i in 1:nrow(switcher_df)) {
-    dw_edit_chart(chart_id=switcher_df$dw_id[i],annotate = balken_text,
+  if (SERVER) {  
+    csv_path <- paste0("daten/",chart_id,".csv")
+    json_path <- paste0("daten/",chart_id,".json")
+    write.csv(ergänzt_f_df,csv_path, row.names = F)
+    system_cmd_csv <- paste0('gsutil -h "Cache-Control:no-cache, max_age=0"',
+                             ' cp daten/',
+                             chart_id,
+                             '.* ',
+                             GS_PATH_GS
+    )
+    # Jetzt das JSON anlegen
+    forced_meta <- list()
+    forced_meta[["describe"]][["byline"]] <- "Jan Eggers"
+    forced_meta[["describe"]][["source-url"]] <- obwahl_q_url
+    forced_meta[["describe"]][["source-name"]] <- obwahl_q_name
+    forced_meta[["annotate"]][["notes"]] <- balken_text
+    forced_meta_json <- toJSON(forced_meta,force=T)
+    write(forced_meta_json,json_path)
+    system(system_cmd_csv)
+  } else {
+    dw_edit_chart(chart_id = chart_id, 
+                  annotate = balken_text,
                   source_name = obwahl_q_name,
                   source_url = obwahl_q_url)
-    dw_data_to_chart(ergänzt_f_df, chart_id = switcher_df$dw_id[i])
-    dw <- dw_publish_chart(switcher_df$dw_id[i])
+    # Daten pushen
+    dw_data_to_chart(ergänzt_f_df,chart_id = chart_id)
+    dw <- dw_publish_chart(chart_id = chart_id)
+  }
+  
+  # Jetzt die Choropleth-Karten für alle Kandidierenden
+  for (i in 1:nrow(switcher_df)) {
+    chart_id <- switcher_df$dw_id[i]
+    if (SERVER) {  
+      csv_path <- paste0("daten/",chart_id,".csv")
+      json_path <- paste0("daten/",chart_id,".json")
+      write.csv(ergänzt_f_df,csv_path, row.names = F)
+      system_cmd_csv <- paste0('gsutil -h "Cache-Control:no-cache, max_age=0"',
+                               ' cp daten/',
+                               chart_id,
+                               '.* ',
+                               GS_PATH_GS
+      )
+      # Jetzt das JSON anlegen
+      forced_meta <- list()
+      forced_meta[["describe"]][["byline"]] <- "Jan Eggers"
+      forced_meta[["describe"]][["source-url"]] <- obwahl_q_url
+      forced_meta[["describe"]][["source-name"]] <- obwahl_q_name
+      forced_meta[["annotate"]][["notes"]] <- balken_text
+      forced_meta_json <- toJSON(forced_meta,force=T)
+      write(forced_meta_json,json_path)
+      system(system_cmd_csv)
+    } else {
+      dw_edit_chart(chart_id,
+                    annotate = balken_text,
+                    source_name = obwahl_q_name,
+                    source_url = obwahl_q_url)
+      # Daten pushen
+      dw_data_to_chart(ergänzt_f_df, chart_id = chart_id)
+      dw <- dw_publish_chart(chart_id)
+    }
   }
   cat("Karten neu publiziert\n")
 }
 
 aktualisiere_hochburgen <- function(hochburgen_df) {
   # Das ist ziemlich geradeheraus. 
-  # Pushe Daten.
-  dw_data_to_chart(hochburgen_df, chart_id = hochburgen_id)
-  if (SERVER) {
-    write.csv(hochburgen_df,"daten/hochburgen.csv")
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/hochburgen.csv gs://d.data.gcp.cloud.hr.de/obwahl/hochburgen.csv')
-  }
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
+  chart_id <- hochburgen_id
+  if (SERVER) {
+    csv_path <- paste0("daten/",chart_id,".csv")
+    json_path <- paste0("daten/",chart_id,".json")
+    write.csv(hochburgen_df,csv_path, row.names = F)
+    system_cmd_csv <- paste0('gsutil -h "Cache-Control:no-cache, max_age=0"',
+                             ' cp daten/',
+                             chart_id,
+                             '.* ',
+                             GS_PATH_GS
+    )
+    # Jetzt das JSON anlegen
+    forced_meta <- list()
+    forced_meta[["describe"]][["byline"]] <- "Jan Eggers"
+    forced_meta[["describe"]][["source-url"]] <- obwahl_q_url
+    forced_meta[["describe"]][["source-name"]] <- obwahl_q_name
+    forced_meta[["annotate"]][["notes"]] <- balken_text
+#    forced_meta[["visualize"]][["columns"]][["Prozent"]][["customColorBarBackground"]] <- 
+#      setNames(as.list(kandidaten_df$Farbwert), 
+#               kandidaten_df$Nummer)
+    forced_meta_json <- toJSON(forced_meta,force=T)
+    write(forced_meta_json,json_path)
+    system(system_cmd_csv)
+  } else {
+    dw_data_to_chart(hochburgen_df, chart_id = chart_id)  
+    metadata_chart <- dw_retrieve_chart_metadata(chart_id)
+    # Save the visualise path
+    visualize <- metadata_chart[["content"]][["metadata"]][["visualize"]]
+    # Die Farben für die Kandidaten werden in dieser Tabelle nur für die Balkengrafiken
+    # in der Spalte "Prozent" benötigt und richten sich nach der Nummer.
+    visualize[["columns"]][["Prozent"]][["customColorBarBackground"]] <- 
+      setNames(as.list(kandidaten_df$Farbwert), 
+               kandidaten_df$Nummer)
+    visualize[["columns"]][["Stimmen"]][["customBarColorBy"]] <- "Parteikürzel"
+    dw_edit_chart(chart_id = hochburgen_id, annotate = balken_text, visualize = visualize)
+    dw_publish_chart(chart_id = hochburgen_id)
+  }
   # Metadaten anpassen: Farbcodes für Parteien
-  metadata_chart <- dw_retrieve_chart_metadata(hochburgen_id)
-  # Save the visualise path
-  visualize <- metadata_chart[["content"]][["metadata"]][["visualize"]]
-  # Die Farben für die Kandidaten werden in dieser Tabelle nur für die Balkengrafiken
-  # in der Spalte "Prozent" benötigt und richten sich nach der Nummer.
-  visualize[["columns"]][["Prozent"]][["customColorBarBackground"]] <- 
-    setNames(as.list(kandidaten_df$Farbwert), 
-             kandidaten_df$Nummer)
-  # Irrtümlich waren die Werte auch noch in visualize[["custom-color"]] gespeichert.
-  visualize[["custom-colors"]] <- NULL
-  dw_edit_chart(chart_id = hochburgen_id, annotate = balken_text, visualize = visualize)
-  dw_publish_chart(chart_id = hochburgen_id)
   cat("Hochburgen-Grafik neu publiziert\n")
 }
 
 
-# Experiment: Die Ergebnistabellen-Daten und -Metadaten bei Server-Betrieb live anlegen und auf den 
-# google bucket ausspielen. 
 aktualisiere_ergebnistabelle <- function(stadtteildaten_df) {
   # Nr des Stadtteils, Stadtteil, Wahlbeteiligung (Info), Ergebnis
   # Wahlbeteiligung und Ergebnis sind jeweils HTML-Text mit den Daten
@@ -449,7 +698,7 @@ aktualisiere_ergebnistabelle <- function(stadtteildaten_df) {
   # Nochmal ansetzen, um als erste Zeile das Gesamtergebnis einzusetzen
   ergebnistabelle_df <- e_tmp_df %>% summarize(nr = 0, sort = 0,
                                name = "GESAMTERGEBNIS",
-                               across(meldungen_anz:ncol(.), ~sum(.,na.r =FALSE))) %>% 
+                               across(meldungen_anz:ncol(.), ~sum(.,na.rm =FALSE))) %>% 
     bind_rows(e_tmp_df) %>% 
     # Mit den Kandidaten-Namen anreichern
     # Ins Langformat umformen, Nummer ist die Kandidatennummer
@@ -521,34 +770,32 @@ aktualisiere_ergebnistabelle <- function(stadtteildaten_df) {
   ts <- stadtteildaten_df %>% pull(zeitstempel) %>% first()
   titel_s <- paste0(ifelse(gezählt < stimmbezirke_n,"TREND: ",""),
                     "Ergebnisse nach ",stadtteil_str)
-  # Daten pushen
-  #
-  # CODE FÜR DEN TEST: Lege eine alternative Stadtteile-Grafik an und pushe auf die
-  test_stadtteile_id = "tV59P"
-  # In dieser Datawrapper-Tabelle trage ich von Hand die CSV- und JSON-Quellen übers Backend ein.
-  # Sollte etwas schief gehen, liegt die Standard-Tabellengrafik tabelle_stadtteile_id 
-  # (Offenbach: "PNtz1") bereit und kann in Sophora eingetragen werden. 
+  chart_id <- tabelle_stadtteile_id
   if (SERVER) {
-    # Wenn Server: CSV auf den Google Bucket
-    write.csv(ergebnistabelle_df,"daten/stadtteile.csv")
-    # Leere Liste (für das JSON mit den Metadaten-Änderungen)
-    metadata <- list()
-    metadata[["describe"]][["intro"]][[1]] <- "Ergebnisse aufgeschlüsselt nach Wahllokal bzw. Briefwahl"
-    metadata[["annotate"]][["notes"]][[1]] <- generiere_auszählung_nurtext(gezählt,stimmbezirke_n,ts)
-    metadata[["title"]] <- paste0(titel_s,".")
-    # JSON-File anlegen...
-    metadata_json <- toJSON(metadata,force=T)
-    write(metadata_json,"daten/stadtteile.json")
-    # ...und auf den Bucket kopieren
-    n <- now()
-    system('gsutil -h "Cache-Control:no-cache, max_age=0" cp daten/stadtteile.* gs://d.data.gcp.cloud.hr.de/obwahl/')
-    # Gib die Zeitdifferenz in die Logdatei/auf die Konsole aus
-    print(now()-n)
-  } # else {
-  { # Code für den Test immer ausführen, um alternativ eine normal 
-    dw_data_to_chart(ergebnistabelle_df %>% select(-nr), chart_id = tabelle_stadtteile_id)
+   csv_path <- paste0("daten/",chart_id,".csv")
+   json_path <- paste0("daten/",chart_id,".json")
+   write.csv(ergebnistabelle_df %>% select(-nr),csv_path, row.names = F)
+   system_cmd_csv <- paste0('gsutil -h "Cache-Control:no-cache, max_age=0"',
+                            ' cp daten/',
+                            chart_id,
+                            '.* ',
+                            GS_PATH_GS
+   )
+   # Jetzt das JSON anlegen
+   forced_meta <- list()
+   forced_meta[["describe"]][["byline"]] <- "Jan Eggers"
+   forced_meta[["describe"]][["source-url"]] <- obwahl_q_url
+   forced_meta[["describe"]][["source-name"]] <- obwahl_q_name
+   forced_meta[["title"]] <- paste0(titel_s,".")
+   forced_meta[["annotate"]][["notes"]] <- generiere_auszählung_nurtext(gezählt,stimmbezirke_n,ts)
+   
+   forced_meta_json <- toJSON(forced_meta,force=T)
+   write(forced_meta_json,json_path)
+   system(system_cmd_csv)
+  } else {
+    dw_data_to_chart(ergebnistabelle_df %>% select(-nr), chart_id = chart_id)
     # Trendergebnis? Schreibe "Trend" oder "Endergebnis" in den Titel
-    dw_edit_chart(chart_id = tabelle_stadtteile_id,title = titel_s,
+    dw_edit_chart(chart_id = chart_id,title = titel_s,
                   annotate=generiere_auszählung_nurtext(gezählt,stimmbezirke_n,ts))
     dw_publish_chart(tabelle_stadtteile_id)
   }

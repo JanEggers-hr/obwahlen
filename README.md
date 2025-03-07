@@ -1,6 +1,6 @@
 # obwahlen
 
-(Stand: 9.9.2023)
+(Stand: 7.3.2025)
 
 R-Code, um den Auszählungsstand hessischer Bürgermeisterwahlen in Echtzeit abzurufen und mit Datawrapper darzustellen (Frankfurt, Kassel Darmstadt)
 

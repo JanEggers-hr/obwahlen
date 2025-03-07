@@ -37,7 +37,7 @@ check = tryCatch(
     source("R/lies_konfiguration.R")
   },
   warning = function(w) {teams_warning(w,title="OBWAHL: Warnung beim Lesen der Konfigurationsdatei")},
-  error = function(e) {teams_error(e,title="OBWAHL: Konfigurationsdatei nicht gelesen!")})
+  error = function(e) {teams_error(e,title="***REMOVED***")})
 
 # Funktionen einbinden
 # Das könnte man auch alles hier in diese Datei schreiben, aber ist es übersichtlicher.
