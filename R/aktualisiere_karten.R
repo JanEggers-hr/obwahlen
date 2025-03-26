@@ -27,7 +27,9 @@ generiere_auszählungsbalken <- function(anz = gezaehlt,
                                         max_s = stimmbezirke_n, 
                                         ts = ts) {
   fortschritt <- floor(anz/max_s*100)
-  annotate_str <- paste0("Ausgezählt sind ",
+  # Anmerkungen ergänzen?
+  if (!exists("obwahl_annotate")) obwahl_annotate<-""
+  annotate_str <- paste0(obwahl_annotate, "Ausgezählt sind ",
                          # Container Fake-Balken
                          "<span style='height:24px;display: flex;justify-content: space-around;align-items: flex-end; width: 100%;'>",
                          # Vordere Pufferzelle 70px
@@ -58,7 +60,10 @@ generiere_auszählungsbalken <- function(anz = gezaehlt,
 
 generiere_auszählung_nurtext <- function(anz = gezaehlt,max_s = stimmbezirke_n,ts = ts) {
   fortschritt <- floor(anz/max_s*100)
-  annotate_str <- paste0("Ausgezählt: ",
+  # Anmerkungen ergänzen?
+  if (!exists("obwahl_annotate")) obwahl_annotate<-""
+  annotate_str <- paste0(obwahl_annotate,
+                        "Ausgezählt: ",
                          anz,
                          " von ",max_s,
                          " Stimmbezirken - ",
@@ -511,7 +516,7 @@ aktualisiere_tabelle_alle <- function(kand_tabelle_df) {
   }
   # Keinen Balken in die Annotations rendern
   balken_text <- generiere_auszählung_nurtext(gezaehlt,stimmbezirke_n,ts)
-  intro <- "Die bislang gezählten Stimmen für alle Kandidatinnen und Kandidaten in der Reihenfolge vom Wahlzettel."
+  intro <- "Die bislang gezählten Stimmen für alle Kandidatinnen und Kandidaten in der Reihenfolge vom Stimmzettel."
   # Metadaten anpassen: Farbcodes für Parteien
   # Jetzt das JSON anlegen
   forced_meta <- list()

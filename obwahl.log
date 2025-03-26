@@ -1,0 +1,164 @@
+Rows: 29 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): name, value, comment
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+2025-03-09 17:34:57.678797  - Neue Daten lesen
+Rows: 247 Columns: 25
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ";"
+chr  (4): datum, wahl, ags, gebiet-name
+dbl  (3): gebiet-nr, max-schnellmeldungen, anz-schnellmeldungen
+lgl (18): A, A1, A2, A3, B, B1, C, D, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Chart rfzlb succesfully updated.
+
+Chart l2Ymx succesfully updated.
+
+Chart eZSnp succesfully updated.
+
+Chart wkIsR succesfully updated.
+
+Chart hnrbs succesfully updated.
+
+Chart Mfqz0 succesfully updated.
+
+Chart UslxD succesfully updated.
+
+Chart x6YJb succesfully updated.
+
+Chart IeqRI succesfully updated.
+
+Chart wz2I5 succesfully updated.
+
+Chart AGfdz succesfully updated.
+
+Chart rfzlb succesfully updated.
+
+Chart rfzlb published!
+### Responsive iFrame-code: ###
+<iframe title="Trend: Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-rfzlb" src="https://datawrapper.dwcdn.net/rfzlb/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="823" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/rfzlb/23/
+Chart l2Ymx succesfully updated.
+
+Chart l2Ymx published!
+### Responsive iFrame-code: ###
+<iframe title="Thilo von Debschitz (CDU) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-l2Ymx" src="https://datawrapper.dwcdn.net/l2Ymx/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="818" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/l2Ymx/23/
+Chart eZSnp succesfully updated.
+
+Chart eZSnp published!
+### Responsive iFrame-code: ###
+<iframe title="Gesine Bonnet (GRÜNE) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-eZSnp" src="https://datawrapper.dwcdn.net/eZSnp/24/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="835" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/eZSnp/24/
+Chart wkIsR succesfully updated.
+
+Chart wkIsR published!
+### Responsive iFrame-code: ###
+<iframe title="Gert-Uwe Mende (SPD) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-wkIsR" src="https://datawrapper.dwcdn.net/wkIsR/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="677" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/wkIsR/23/
+Chart hnrbs succesfully updated.
+
+Chart hnrbs published!
+### Responsive iFrame-code: ###
+<iframe title="Ralf Offermanns (AfD) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-hnrbs" src="https://datawrapper.dwcdn.net/hnrbs/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="815" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/hnrbs/23/
+Chart Mfqz0 succesfully updated.
+
+Chart Mfqz0 published!
+### Responsive iFrame-code: ###
+<iframe title="Ingo von Seemen (Die Linke) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-Mfqz0" src="https://datawrapper.dwcdn.net/Mfqz0/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="677" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/Mfqz0/23/
+Chart UslxD succesfully updated.
+
+Chart UslxD published!
+### Responsive iFrame-code: ###
+<iframe title="Christian Hill (Pro Auto) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-UslxD" src="https://datawrapper.dwcdn.net/UslxD/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="818" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/UslxD/23/
+Chart x6YJb succesfully updated.
+
+Chart x6YJb published!
+### Responsive iFrame-code: ###
+<iframe title="Lukas Haker (Die PARTEI) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-x6YJb" src="https://datawrapper.dwcdn.net/x6YJb/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="677" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/x6YJb/23/
+Chart IeqRI succesfully updated.
+
+Chart IeqRI published!
+### Responsive iFrame-code: ###
+<iframe title="Elmar Krebber (ULW) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-IeqRI" src="https://datawrapper.dwcdn.net/IeqRI/25/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="835" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/IeqRI/25/
+Chart wz2I5 succesfully updated.
+
+Chart wz2I5 published!
+### Responsive iFrame-code: ###
+<iframe title="Andreas Gutzeit (FWG) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-wz2I5" src="https://datawrapper.dwcdn.net/wz2I5/23/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="677" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/wz2I5/23/
+Chart AGfdz succesfully updated.
+
+
+Error in curl::curl_fetch_memory(url, handle = handle): Operation was aborted by an application callback
+Request failed [ERROR]. Retrying in 1 seconds...
+Chart AGfdz published!
+### Responsive iFrame-code: ###
+<iframe title="Mathias Bedürftig (FREIE WÄHLER) - Ergebnis nach Ortsbezirk" aria-label="Karte" id="datawrapper-chart-AGfdz" src="https://datawrapper.dwcdn.net/AGfdz/24/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="835" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/AGfdz/24/
+Chart RZZtA succesfully updated.
+
+
+Error in curl::curl_fetch_memory(url, handle = handle): Operation was aborted by an application callback
+Request failed [ERROR]. Retrying in 1 seconds...
+Chart RZZtA published!
+### Responsive iFrame-code: ###
+<iframe title="Alle bisher gezählten Stimmen (Stand: 15:00 Uhr)" aria-label="Tabelle" id="datawrapper-chart-RZZtA" src="https://datawrapper.dwcdn.net/RZZtA/28/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="715" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/RZZtA/28/
+Chart O9pR1 succesfully updated.
+
+Chart O9pR1 published!
+### Responsive iFrame-code: ###
+<iframe title="TREND: Ergebnisse nach Ortsbezirk" aria-label="Tabelle" id="datawrapper-chart-O9pR1" src="https://datawrapper.dwcdn.net/O9pR1/25/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="648" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r=0;r<e.length;r++)if(e[r].contentWindow===a.source){var i=a.data["datawrapper-height"][t]+"px";e[r].style.height=i}}}))}();
+</script>
+
+### Chart-URL:###
+https://datawrapper.dwcdn.net/O9pR1/25/
+Chart Z64hO succesfully updated.
+

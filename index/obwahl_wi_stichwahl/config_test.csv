@@ -1,0 +1,23 @@
+name,value,comment
+wahl_name,obwahl_wi_stichwahl,Welche Wahl?
+stimmbezirke_url,testdaten/test.csv,URL Daten-CSV Stimmbezirke
+wahlberechtigt,185000,Anzahl Wahlberechtigte lt. Wahlamt (kommt Sonntag)
+briefwahl,80000,Anzahl Briefwahlstimmen lt. Wahlamt (kommt Sonntag)
+top,2,Anzahl der Top-Kandidaten in den Darstellungen
+kandidaten_fname,kandidaten.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+zuordnung_fname,wahlbezirke.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+stadtteile_fname,wi_ortsbezirke.xlsx,"XLSX oder CSV, wird im Ordner <wahl_name> erwartet"
+startdatum,2025-03-26 10:00:00,Beginn der Auszählung
+top_id,83wpe,„Toptorte“
+karte_sieger_id,qvQ21,Symbolkarte mit Stadtteilsiegern
+karte_kand1_id,04CqE,"von Debschitz (CDU, FDP)"
+karte_kand2_id,Raa8J,Mende (SPD)
+tabelle_alle_id,tFMth,Alle Stimmen mit Balken
+hochburgen_id,2ysuG,"Tabelle stärkste, schwächste"
+tabelle_stadtteile_id,fHugL,
+social1_id,8Fckl,5 stärkste
+social2_id,S9BbQ,Alle Stimmen angepasst
+stadtteil_str,Ortsbezirk,ggf. Ersatz für die Bezeichnung „Stadtteil“
+obwahl_q_name,Stadt Wiesbaden/ekom21,
+obwahl_q_url,https://wahlergebnisse.wiesbaden.de/web/guest/oberbuergermeisterwahlen/2025?s=2071dfb3b1cccfc9a07bb334c7f47e84d10b412f,
+obwahl_annotate,"Thilo von Debschitz ist parteilos, auf dem <a href=""https://wahlergebnisse.wiesbaden.de/a-web/_wahl/Stimmzettel/OB-Wahl/2025_OB_Hauptwahl.pdf?s=cd7007716b77afb446b3bdd883332d9b495667e5?a=0.1423859876953285"" target=""_blank"">Wahlzettel</a> wird er aber als Kandidat der CDU aufgeführt, die gemeinsam mit der FDP seinen Wahlvorschlag unterstützt.<br><br>",
